@@ -61,7 +61,8 @@ public class SplicePreviewWindow extends Application {
         } else if (mode.equals("V")) {
             sp.setImageModelList0(imageModelList);//对imageModelList竖直拼接
         }else{//九宫格
-            System.out.println("+++");
+//            System.out.println("999");//for_test
+            sp.setImageModelList2(imageModelList);
         }
 
         //加载css样式文件

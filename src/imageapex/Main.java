@@ -39,7 +39,7 @@ public class Main extends Application{
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/imageapex/main/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
-        System.out.println("Starting Only Viewer...");
+        System.out.println("Starting ...");
     }
 
     public static void main(String[] args) {

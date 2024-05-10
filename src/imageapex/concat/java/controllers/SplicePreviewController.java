@@ -13,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -50,8 +51,11 @@ public class SplicePreviewController implements Initializable {
     @FXML
     private VBox vBox0;//存储竖直拼接后的图像
 
-     @FXML
-     private HBox hBox1;//存储水平拼接后图像
+    @FXML
+    private HBox hBox1;//存储水平拼接后图像
+
+    @FXML
+    GridPane gridPane = new GridPane();//九宫格网格面板
 
     private ImageModel imageModel;
 
@@ -59,7 +63,7 @@ public class SplicePreviewController implements Initializable {
     private HomeController hc;
     private JFXSnackbar snackbar;//弹窗显示
 
-    String mode;
+    String mode;//拼接的模式
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,7 +79,7 @@ public class SplicePreviewController implements Initializable {
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
-        //saveButton的位置会根据rootPane的大小自动调整  +++添加第二个saveButton 保存九宫格信息
+        //saveButton的位置会根据rootPane的大小自动调整
         saveButton.translateYProperty().bind(rootPane.heightProperty().divide(15).multiply(5));
         saveButton.translateXProperty().bind(rootPane.widthProperty().divide(15).multiply(6));
         snackbar = new JFXSnackbar(hc.getRootPane());
@@ -134,54 +138,59 @@ public class SplicePreviewController implements Initializable {
      }
 
     //九宫格
-    // public void setImageModelList2(ArrayList<ImageModel> set) {
-    //     this.imageModelList = set; // 将传入的图片模型列表赋值给当前对象的imageModelList属性
-    //     scrollPane.setContent(gridPane); // 将网格面板设置为滚动面板的内容
+     public void setImageModelList2(ArrayList<ImageModel> set) {
+         this.mode="Grid";
+         this.imageModelList = set;
+         scrollPane.setContent(gridPane);
 
-    //     int row = 0; // 初始化行计数器
-    //     int col = 0; // 初始化列计数器
-    //     // 遍历图片模型列表
-    //     for (ImageModel im : imageModelList) {
-    //         Image image = new Image(im.getImageFile().toURI().toString()); // 创建Image对象，使用图片模型的文件路径作为参数
-    //         ImageView imageView = new ImageView(image); // 创建ImageView对象，并将Image对象作为参数传入
+         int row = 0;
+         int col = 0;
 
-    //         if (row == 0 && col == 0) {
-    //             this.imageModel = im; // 如果是第一个图片模型，将其赋值给当前对象的imageModel属性
-    //             this.imageView = imageView; // 将对应的ImageView对象赋值给当前对象的imageView属性
-    //         }
+         for (ImageModel im : imageModelList) {
+             Image image = new Image(im.getImageFile().toURI().toString());
+             ImageView imageView = new ImageView(image);
 
-    //         imageView.setSmooth(true); // 设置图片平滑处理
-    //         imageView.setFitWidth(200); // 设置图片的宽度为200像素
-    //         imageView.setPreserveRatio(true); // 保持图片的宽高比
-    //         imageView.setStyle("-fx-margin:0;-fx-padding:0;"); // 设置图片的样式，去除外边距和内边距
-    //         gridPane.add(imageView, col, row); // 将ImageView对象添加到网格面板中的指定位置
+             if (row == 0 && col == 0) {
+                 this.imageModel = im;
+                 this.imageView2 = imageView;
+             }
 
-    //         col++; // 列计数器加1
-    //         if (col == 3) { // 如果列计数器达到3，则换行
-    //             col = 0;
-    //             row++;
-    //         }
-    //     }
-    // }
+             imageView.setSmooth(true);
+             imageView.setFitWidth(300);//设置成正方形 且不能保持原比例 否则效果不好 +++
+             imageView.setFitHeight(300);
+             imageView.setPreserveRatio(false);
+             imageView.setStyle("-fx-margin:0;-fx-padding:0;"); // 设置图片的样式，去除外边距和内边距
+
+             gridPane.add(imageView, col, row); // 将ImageView对象添加到网格面板中的指定位置
+             col++; // 列计数器加1
+             if (col == 3) { // 如果列计数器达到3，则换行
+                 col = 0;
+                 row++;
+             }
+         }
+     }
 
     //截图 = 保存 与saveButton绑定
     @FXML
     private void snap() {
-        ImageView imageView;
-        if(this.mode.equals("H")){
-            imageView = imageView1;
-        }else if(this.mode.equals("V")){
-            imageView = imageView0;
-        }else{
-            imageView = imageView2;
-        }
+        WritableImage wa;
+        Stage stage;
 
-        //获取imageView的父容器 也就是vBox的快照
-        WritableImage wa = imageView.getParent().snapshot(null, null);//+++ 编辑像素操作/颜色处理
+        if(this.mode.equals("H")){//bug 空指针？？？ 解决 原因是setImageModelList2没有对mode复制
+            wa = imageView1.getParent().snapshot(null, null);
+            stage = (Stage) imageView1.getScene().getWindow();
+        }else if(this.mode.equals("V")){
+            wa = imageView0.getParent().snapshot(null, null);
+            stage = (Stage) imageView0.getScene().getWindow();
+        }else{
+//            System.out.println("99999");//for_test
+            wa = gridPane.getParent().snapshot(null, null);
+            stage= (Stage) gridPane.getScene().getWindow();
+        }
 
         //设置图片名字包含当前系统时间
         Date date = new Date();
-        Stage stage = (Stage) imageView.getScene().getWindow();
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
 
         String prefix = imageModelList.get(0).getImageNameNoExt();//获取不带扩展名的名字

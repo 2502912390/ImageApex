@@ -20,10 +20,6 @@ import java.util.ArrayList;
 
 /**
  * 自定义、可复用的对话框，减少使用对话框时的重复代码
- *
- * @author Grey
- * @see com.jfoenix.controls.JFXDialog
- * @since 2020.05
  */
 public class CustomDialog extends JFXDialog {
 
@@ -122,7 +118,7 @@ public class CustomDialog extends JFXDialog {
         setHeadingLabel(headingText);
     }
 
-    //图像拼接构造函数
+    //用于图像拼接构造函数
     public CustomDialog(AbstractController controller,
                         DialogType type, ImageModel targetImage,
                         String headingText,ArrayList<ImageModel> sourceList) {
@@ -145,8 +141,6 @@ public class CustomDialog extends JFXDialog {
         this(controller, type, targetImage, headingText);
         setBodyLabel(bodyText);
     }
-
-    //也可以手动设置标题文字和主体文字，或向主体传入其他节点------------
 
     public void setHeadingLabel(String headingText) {
         headingLabel = new Label(headingText);
@@ -323,14 +317,19 @@ public class CustomDialog extends JFXDialog {
         });
 
         rightButton.setOnAction(event -> {
-            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
-            previewWindow.initImageList(sourceList,"Grid");
-            //打开窗口
-            try {
-                previewWindow.start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(sourceList.size()!=9){
+                new JFXSnackbar(hc.getRootPane()).enqueue(new JFXSnackbar.SnackbarEvent("目前选了"+sourceList.size()+"张照片，"+"请选择九张照片捏~"));
+            }else{
+                SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+                previewWindow.initImageList(sourceList,"Grid");
+                //打开窗口
+                try {
+                    previewWindow.start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+
     }
 }
