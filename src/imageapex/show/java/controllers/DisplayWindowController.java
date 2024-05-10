@@ -73,6 +73,11 @@ public class DisplayWindowController extends AbstractController implements Initi
     private SwitchPics sw;
     private HomeController hc;
 
+    private int width ;
+    private int height ;
+
+    private PixelWriter pixelWriter;
+
     public DisplayWindowController() {
 
     }
@@ -85,6 +90,8 @@ public class DisplayWindowController extends AbstractController implements Initi
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
         snackbar = new JFXSnackbar(rootPane);
         stage = DisplayWindow.getStage();
+
+
 
         System.out.println("Display window initialization done...");
     }
@@ -180,6 +187,32 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         });
 
+        // bug 添加涂鸦后拖拽会失效
+        imageView.setOnMouseDragged(event -> {
+            // 获取鼠标位置
+            double x = event.getX();
+            double y = event.getY();
+
+            // 设置涂鸦颜色
+            Color color = Color.RED;
+
+            // 设置圆形半径
+            int radius = 10; // 可以根据需要调整圆形半径
+
+            // 在以鼠标位置为中心的圆形区域内绘制像素点
+            for (int i = (int) (x - radius); i <= x + radius; i++) {
+                for (int j = (int) (y - radius); j <= y + radius; j++) {
+                    // 检查当前像素点是否在圆形内
+                    if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius) {
+                        int pixelX = i;
+                        int pixelY = j;
+                        if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+                            pixelWriter.setColor(pixelX, pixelY, color);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -394,13 +427,14 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML //涂鸦
     private void edit() {
-        int width = (int) image.getWidth();
-        int height = (int) image.getHeight();
+        //bug? 刚刚初始化 image为null
+        width = (int) image.getWidth();
+        height = (int) image.getHeight();
 
         // 创建可写图像对象
         WritableImage writableImage = new WritableImage(width, height);
         PixelReader pixelReader = image.getPixelReader();
-        PixelWriter pixelWriter = writableImage.getPixelWriter();
+        pixelWriter = writableImage.getPixelWriter();
 
         // 将原始图像的像素复制到可写图像中
         for (int x = 0; x < width; x++) {//copy操作
@@ -412,33 +446,6 @@ public class DisplayWindowController extends AbstractController implements Initi
 
         // 将可写图像显示在 ImageView 中
         imageView.setImage(writableImage);
-
-        //
-        imageView.setOnMouseDragged(event -> {
-            // 获取鼠标位置
-            double x = event.getX();
-            double y = event.getY();
-
-            // 设置涂鸦颜色
-            Color color = Color.RED;
-
-            // 设置圆形半径
-            int radius = 10; // 可以根据需要调整圆形半径
-
-            // 在以鼠标位置为中心的圆形区域内绘制像素点
-            for (int i = (int) (x - radius); i <= x + radius; i++) {
-                for (int j = (int) (y - radius); j <= y + radius; j++) {
-                    // 检查当前像素点是否在圆形内
-                    if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius) {
-                        int pixelX = i;
-                        int pixelY = j;
-                        if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
-                            pixelWriter.setColor(pixelX, pixelY, color);
-                        }
-                    }
-                }
-            }
-        });
 
     }
 }
