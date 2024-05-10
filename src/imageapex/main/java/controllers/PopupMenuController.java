@@ -109,19 +109,22 @@ public class PopupMenuController implements Initializable {
                 if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
                 else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;
-            case 4:
+            case 4://拼接
                 if (sourceList.isEmpty() || sourceList.size() == 1) {
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张或以上图片进行拼接"));
                 } else {
-                    SplicePreviewWindow previewWindow = new SplicePreviewWindow();
-                    previewWindow.initImageList(sourceList);
-                    //打开窗口
-                    try {
-                        previewWindow.start(new Stage());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    new CustomDialog(hc, DialogType.CHOICE, im, "选择拼接方式").show();
+
+                    System.out.println("******");
+//                    SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+//                    previewWindow.initImageList(sourceList);
+//                    //打开窗口
+//                    try {
+//                        previewWindow.start(new Stage());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 imageBox.getPopUpMenu().hide();
                 break;

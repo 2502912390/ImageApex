@@ -2,6 +2,7 @@ package imageapex.main.java.components;
 
 
 import com.jfoenix.controls.*;
+import imageapex.concat.SplicePreviewWindow;
 import imageapex.show.java.controllers.DisplayWindowController;
 import imageapex.main.java.controllers.AbstractController;
 import imageapex.main.java.controllers.ControllerUtil;
@@ -10,6 +11,7 @@ import imageapex.main.java.model.ImageModel;
 import imageapex.main.java.model.SelectedModel;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +39,8 @@ public class CustomDialog extends JFXDialog {
     private JFXButton leftButton;
     @Getter
     private JFXButton rightButton;
+    @Getter
+    private JFXButton midButton;
 
     @Getter
     private Label headingLabel;
@@ -69,9 +73,15 @@ public class CustomDialog extends JFXDialog {
         rightButton.getStyleClass().add("dialog-confirm");
         rightButton.setText("确认");
 
+        midButton = new JFXButton();
+        midButton.getStyleClass().add("dialog-confirm");
+        midButton.setText("中间");
+        midButton.setVisible(false);//设置默认不可见
+
         //默认情况下，两按钮都是关闭对话框操作而不做任何事
         setCloseAction(leftButton);
         setCloseAction(rightButton);
+        setCloseAction(midButton);
 
         this.setOverlayClose(true);
         layout.setMaxWidth(500);
@@ -89,6 +99,8 @@ public class CustomDialog extends JFXDialog {
             case REPLACE:
                 makeReplaceDialog();
                 break;
+            case CHOICE://选择拼接方式
+                makeChoiceDialog();
             default:
         }
     }
@@ -152,8 +164,8 @@ public class CustomDialog extends JFXDialog {
      */
     @Override
     public void show() {
-        if (leftButton != null && rightButton != null)
-            layout.setActions(leftButton, rightButton);
+        if (leftButton != null && rightButton != null && midButton != null)
+            layout.setActions(leftButton,midButton,rightButton);
         else
             System.out.println("ERROR: 未指定对话框按钮");
         this.setContent(layout);
@@ -265,4 +277,34 @@ public class CustomDialog extends JFXDialog {
         });
     }
 
+    private void makeChoiceDialog() {
+        leftButton.setText("竖直拼接");
+        leftButton.setStyle("-fx-text-fill: #ff0000;");
+
+        midButton.setVisible(true);//只有选择九宫格时才可见
+        midButton.setText("横向拼接");
+        midButton.setStyle("-fx-text-fill: #22ff00;");
+
+        rightButton.setText("九宫格拼接");
+        rightButton.setStyle("-fx-text-fill: #0022ff;");
+
+        leftButton.setOnAction(event -> {
+
+        });
+
+        midButton.setOnAction(event -> {
+//            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+//            previewWindow.initImageList(sourceList);
+//            //打开窗口
+//            try {
+//                previewWindow.start(new Stage());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        });
+
+        rightButton.setOnAction(event -> {
+
+        });
+    }
 }

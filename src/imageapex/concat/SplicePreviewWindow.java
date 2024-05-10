@@ -18,16 +18,14 @@ import java.util.ArrayList;
 
 /**
  * 图片拼接窗口
- *
- * @author Grey
- * @since 2020.05
  */
 public class SplicePreviewWindow extends Application {
 
-    public static double windowWidth;
+    public static double windowWidth;//保存合适的窗口大小
     public static double windowHeight;
-    private SplicePreviewController sp;
-    private ArrayList<ImageModel> imageModelList;
+
+    private SplicePreviewController sp;//
+    private ArrayList<ImageModel> imageModelList;//要拼接的图像
 
     @Override
     public void init() throws Exception {
@@ -52,10 +50,11 @@ public class SplicePreviewWindow extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例
-        sp.setImageModelList(imageModelList);
+        sp.setImageModelList(imageModelList);//对imageModelList竖直拼接
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -66,7 +65,6 @@ public class SplicePreviewWindow extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void initImageList(ArrayList<ImageModel> imageModelList){
         this.imageModelList = imageModelList;

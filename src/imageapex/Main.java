@@ -16,7 +16,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("OnlyViewer");
+        primaryStage.setTitle("ImageApex");
 
         //根据屏幕大小自适应设置长宽
         double width = 800;
