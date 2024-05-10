@@ -392,61 +392,18 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
-//    @FXML //涂鸦
-//    private void edit() {
-//        // 获取原始图像
-//        Image originalImage = imageView.getImage();
-//        int width = (int) originalImage.getWidth();
-//        int height = (int) originalImage.getHeight();
-//
-//        // 创建可写图像对象
-//        WritableImage writableImage = new WritableImage(width, height);
-//        PixelReader pixelReader = originalImage.getPixelReader();
-//        PixelWriter pixelWriter = writableImage.getPixelWriter();
-//
-//        // 将原始图像的像素复制到可写图像中
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                Color color = pixelReader.getColor(x, y);
-//                pixelWriter.setColor(x, y, color);
-//            }
-//        }
-//
-//        // 将可写图像显示在 ImageView 中
-//        imageView.setImage(writableImage);
-//
-//        // 添加鼠标事件监听器
-//        imageView.setOnMouseDragged(event -> {
-//            // 获取鼠标位置
-//            double x = event.getX();
-//            double y = event.getY();
-//
-//            // 设置涂鸦颜色
-//            Color color = Color.RED;
-//
-//            // 在图像上绘制点
-//            int pixelX = (int) x;
-//            int pixelY = (int) y;
-//            if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
-//                pixelWriter.setColor(pixelX, pixelY, color);
-//            }
-//        });
-//    }
-
-
+    @FXML //涂鸦
     private void edit() {
-        // 获取原始图像
-        Image originalImage = imageView.getImage();
-        int width = (int) originalImage.getWidth();
-        int height = (int) originalImage.getHeight();
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
 
         // 创建可写图像对象
         WritableImage writableImage = new WritableImage(width, height);
-        PixelReader pixelReader = originalImage.getPixelReader();
+        PixelReader pixelReader = image.getPixelReader();
         PixelWriter pixelWriter = writableImage.getPixelWriter();
 
         // 将原始图像的像素复制到可写图像中
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {//copy操作
             for (int y = 0; y < height; y++) {
                 Color color = pixelReader.getColor(x, y);
                 pixelWriter.setColor(x, y, color);
@@ -456,29 +413,50 @@ public class DisplayWindowController extends AbstractController implements Initi
         // 将可写图像显示在 ImageView 中
         imageView.setImage(writableImage);
 
-        // 设置涂鸦笔触的大小
-        double brushSize = 5.0;
-
-        // 添加鼠标事件监听器
+        //
         imageView.setOnMouseDragged(event -> {
             // 获取鼠标位置
             double x = event.getX();
             double y = event.getY();
 
             // 设置涂鸦颜色
-            Color color = Color.BLACK;
+            Color color = Color.RED;
 
-            // 根据笔触大小在图像上绘制点
-            for (int offsetX = (int) -brushSize; offsetX <= brushSize; offsetX++) {
-                for (int offsetY = (int) -brushSize; offsetY <= brushSize; offsetY++) {
-                    int pixelX = (int) (x + offsetX);
-                    int pixelY = (int) (y + offsetY);
-                    if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
-                        pixelWriter.setColor(pixelX, pixelY, color);
+            // 设置圆形半径
+            int radius = 10; // 可以根据需要调整圆形半径
+
+            // 在以鼠标位置为中心的圆形区域内绘制像素点
+            for (int i = (int) (x - radius); i <= x + radius; i++) {
+                for (int j = (int) (y - radius); j <= y + radius; j++) {
+                    // 检查当前像素点是否在圆形内
+                    if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius) {
+                        int pixelX = i;
+                        int pixelY = j;
+                        if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+                            pixelWriter.setColor(pixelX, pixelY, color);
+                        }
                     }
                 }
             }
         });
-    }
 
+    }
 }
+
+//效果不好
+// 添加鼠标事件监听器
+//        imageView.setOnMouseDragged(event -> {
+//            // 获取鼠标位置
+//            double x = event.getX();
+//            double y = event.getY();
+//
+//            // 设置涂鸦颜色 +++添加可选颜色操作
+//            Color color = Color.RED;
+//
+//            // 在图像上绘制点
+//            int pixelX = (int) x;
+//            int pixelY = (int) y;
+//            if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+//                pixelWriter.setColor(pixelX, pixelY, color);
+//            }
+//        });
