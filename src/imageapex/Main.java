@@ -16,7 +16,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("OnlyViewer");
+        primaryStage.setTitle("ImageApex");
 
         //根据屏幕大小自适应设置长宽
         double width = 800;
@@ -32,10 +32,14 @@ public class Main extends Application{
         Parent root = FXMLLoader.load(getClass().getResource("/imageapex/main/resources/fxml/Home.fxml"));
         Scene scene = new Scene(new JFXDecorator(primaryStage, root), width, height);
 
+        //加载css样式文件
+        final ObservableList<String> stylesheets = scene.getStylesheets();
+        stylesheets.addAll(Main.class.getResource("/imageapex/main/resources/css/main.css").toExternalForm());
+
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/imageapex/main/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
-        System.out.println("Starting Only Viewer...");
+        System.out.println("Starting ...");
     }
 
     public static void main(String[] args) {

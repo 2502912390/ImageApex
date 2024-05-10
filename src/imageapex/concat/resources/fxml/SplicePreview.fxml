@@ -20,10 +20,18 @@
                 AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
                 AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
 
-        <VBox fx:id="vBox">
-            <!--此处imageView不设置内容，仅为截图提供标记-->
-            <ImageView fx:id="imageView" style="-fx-margin:0;-fx-padding:0;"/>
+        <VBox fx:id="vBox0">
+            <ImageView fx:id="imageView0" style="-fx-margin:0;-fx-padding:0;"/>
         </VBox>
+
+        <HBox fx:id="hBox1">
+            <ImageView fx:id="imageView1" style="-fx-margin:0;-fx-padding:0;"/>
+        </HBox>
+
+<!--        九宫格-->
+        <GridPane fx:id="gridPane">
+            <!-- 在这里添加你的组件 -->
+        </GridPane>
 
     </ScrollPane>
 

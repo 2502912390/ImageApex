@@ -12,5 +12,6 @@ public enum DialogType {
     DELETE,     //删除
     REPLACE,    //替换
     INFO,       //展示信息（可复制）
+    CHOICE,     //选择拼接方式
     OTHER,      //其他
 }

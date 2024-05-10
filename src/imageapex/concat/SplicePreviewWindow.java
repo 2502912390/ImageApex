@@ -18,16 +18,16 @@ import java.util.ArrayList;
 
 /**
  * 图片拼接窗口
- *
- * @author Grey
- * @since 2020.05
  */
 public class SplicePreviewWindow extends Application {
 
-    public static double windowWidth;
+    public static double windowWidth;//保存合适的窗口大小
     public static double windowHeight;
-    private SplicePreviewController sp;
-    private ArrayList<ImageModel> imageModelList;
+
+    private SplicePreviewController sp;//
+    private ArrayList<ImageModel> imageModelList;//要拼接的图像
+
+    String mode;//用于选择拼接方式 H V Grid
 
     @Override
     public void init() throws Exception {
@@ -52,10 +52,18 @@ public class SplicePreviewWindow extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例
-        sp.setImageModelList(imageModelList);
+        if(mode.equals("H")){
+            sp.setImageModelList1(imageModelList);//对imageModelList横向拼接
+        } else if (mode.equals("V")) {
+            sp.setImageModelList0(imageModelList);//对imageModelList竖直拼接
+        }else{//九宫格
+//            System.out.println("999");//for_test
+            sp.setImageModelList2(imageModelList);
+        }
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -67,9 +75,9 @@ public class SplicePreviewWindow extends Application {
         stage.show();
     }
 
-
-    public void initImageList(ArrayList<ImageModel> imageModelList){
+    public void initImageList(ArrayList<ImageModel> imageModelList,String mode){
         this.imageModelList = imageModelList;
+        this.mode=mode;
     }
 
 }
