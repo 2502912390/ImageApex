@@ -13,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -27,95 +28,155 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-/**
- * @ProjName: OnlyViewer
- * @ClassName: SplicePreviewController
- * @Author: tudou daren
- * @Author: grey
- * @Describe: 拼接窗口Controller
- * @since 2020.05
- */
-
+//拼接类Contrller
 public class SplicePreviewController implements Initializable {
     @FXML
     private StackPane rootPane;
     @FXML
-    private JFXButton saveButton;
+    private JFXButton saveButton;//保存按钮
     @FXML
     private ImageView imageView;
     @FXML
     private ScrollPane scrollPane;
+
     @FXML
-    private VBox vBox;
+    private VBox vBox;//存储竖直拼接后的图像
+
+     @FXML
+     private HBox hBox;
 
     private ImageModel imageModel;
 
-    private ArrayList<ImageModel> imageModelList;
+    private ArrayList<ImageModel> imageModelList;//要拼接的图像
     private HomeController hc;
-    private JFXSnackbar snackbar;
+    private JFXSnackbar snackbar;//弹窗显示
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        scrollPane.setContent(new ImageView(new Image("file:/D:/result-2018-08-18-22-01-03.png")));
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(0);
 
+        //该类放入全局映射
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
-        //保存按钮设置自适应位置
+        //saveButton的位置会根据rootPane的大小自动调整  +++添加第二个saveButton 保存九宫格信息
         saveButton.translateYProperty().bind(rootPane.heightProperty().divide(15).multiply(5));
         saveButton.translateXProperty().bind(rootPane.widthProperty().divide(15).multiply(6));
         snackbar = new JFXSnackbar(hc.getRootPane());
     }
 
-    //先调用这个设置好图片，否则会导致空指针
+    //先调用这个设置好图片，否则会导致空指针 bug
+    //将set图片竖直拼接
     public void setImageModelList(ArrayList<ImageModel> set) {
         this.imageModelList = set;
         scrollPane.setContent(vBox);
+
         int number = 0;
         //将图片加入到垂直盒子中
         for (ImageModel im : imageModelList) {
             Image image = new Image(im.getImageFile().toURI().toString());
             ImageView imageView = new ImageView(image);
+
             if (number == 0) {
                 this.imageModel = im;
                 this.imageView = imageView;
                 number++;
             }
+
             imageView.setSmooth(true);
-            imageView.setFitWidth(800);     //此处指定了拼接出的图片的宽度，注释掉此句则保持原图尺寸
+            imageView.setFitWidth(800); //此处指定了拼接出的图片的宽度，注释掉此句则保持原图尺寸
             imageView.setPreserveRatio(true);
             imageView.setStyle("-fx-margin:0;-fx-padding:0;");
-            vBox.getChildren().add(imageView);
-        }
 
+            vBox.getChildren().add(imageView);//拼接
+        }
     }
 
+    // public void setImageModelList(ArrayList<ImageModel> set) {
+    //     this.imageModelList = set; // 将传入的图片模型列表赋值给当前对象的imageModelList属性
+    //     scrollPane.setContent(hBox); // 将水平盒子设置为滚动面板的内容
 
-    //截图 = 保存
+    //     int number = 0; // 初始化计数器
+    //     // 遍历图片模型列表
+    //     for (ImageModel im : imageModelList) {
+    //         Image image = new Image(im.getImageFile().toURI().toString()); // 创建Image对象，使用图片模型的文件路径作为参数
+    //         ImageView imageView = new ImageView(image); // 创建ImageView对象，并将Image对象作为参数传入
+
+    //         if (number == 0) {
+    //             this.imageModel = im; // 如果是第一个图片模型，将其赋值给当前对象的imageModel属性
+    //             this.imageView = imageView; // 将对应的ImageView对象赋值给当前对象的imageView属性
+    //             number++; // 计数器加1
+    //         }
+
+    //         imageView.setSmooth(true); // 设置图片平滑处理
+    //         imageView.setFitHeight(600); // 设置图片的高度为600像素
+    //         imageView.setPreserveRatio(true); // 保持图片的宽高比
+    //         imageView.setStyle("-fx-margin:0;-fx-padding:0;"); // 设置图片的样式，去除外边距和内边距
+    //         hBox.getChildren().add(imageView); // 将ImageView对象添加到水平盒子中
+    //     }
+    // }
+
+    //九宫格
+    // public void setImageModelList(ArrayList<ImageModel> set) {
+    //     this.imageModelList = set; // 将传入的图片模型列表赋值给当前对象的imageModelList属性
+    //     scrollPane.setContent(gridPane); // 将网格面板设置为滚动面板的内容
+
+    //     int row = 0; // 初始化行计数器
+    //     int col = 0; // 初始化列计数器
+    //     // 遍历图片模型列表
+    //     for (ImageModel im : imageModelList) {
+    //         Image image = new Image(im.getImageFile().toURI().toString()); // 创建Image对象，使用图片模型的文件路径作为参数
+    //         ImageView imageView = new ImageView(image); // 创建ImageView对象，并将Image对象作为参数传入
+
+    //         if (row == 0 && col == 0) {
+    //             this.imageModel = im; // 如果是第一个图片模型，将其赋值给当前对象的imageModel属性
+    //             this.imageView = imageView; // 将对应的ImageView对象赋值给当前对象的imageView属性
+    //         }
+
+    //         imageView.setSmooth(true); // 设置图片平滑处理
+    //         imageView.setFitWidth(200); // 设置图片的宽度为200像素
+    //         imageView.setPreserveRatio(true); // 保持图片的宽高比
+    //         imageView.setStyle("-fx-margin:0;-fx-padding:0;"); // 设置图片的样式，去除外边距和内边距
+    //         gridPane.add(imageView, col, row); // 将ImageView对象添加到网格面板中的指定位置
+
+    //         col++; // 列计数器加1
+    //         if (col == 3) { // 如果列计数器达到3，则换行
+    //             col = 0;
+    //             row++;
+    //         }
+    //     }
+    // }
+
+    //截图 = 保存 与saveButton绑定
     @FXML
     private void snap() {
-        WritableImage wa = imageView.getParent().snapshot(null, null);
+        //获取imageView的父容器 也就是vBox的快照
+        WritableImage wa = imageView.getParent().snapshot(null, null);//+++ 编辑像素操作/颜色处理
+
         //设置图片名字包含当前系统时间
         Date date = new Date();
         Stage stage = (Stage) imageView.getScene().getWindow();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-        String prefix = imageModelList.get(0).getImageNameNoExt();
 
+        String prefix = imageModelList.get(0).getImageNameNoExt();//获取不带扩展名的名字
         try {
             BufferedImage buff = SwingFXUtils.fromFXImage(wa, null);
             System.out.println("buff = " + buff);
+
+            //保存为png格式图像
             ImageIO.write(buff, "png",
                     //保存到当前文件夹
-                    new File(imageModel.getImageParentPath() + "\\" + prefix + "_more_" + dateFormat.format(date) + ".png"));
+                    new File(imageModel.getImageParentPath() + "\\" + prefix + "_concat_" + dateFormat.format(date) + ".png"));
+
+            //刷新界面
             hc.refreshImagesList(hc.getSortComboBox().getValue());
             stage.close(); //为了处理卡顿关闭该窗口
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接完成，已创建副本")); //信息条提示
         } catch (IOException e) {
             stage.close();
-            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接失败，可能是图片过长"));
+            snackbar.enqueue(new JFXSnackbar.SnackbarEvent("拼接失败，图片过长"));
             e.printStackTrace();
         }
     }

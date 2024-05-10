@@ -32,6 +32,10 @@ public class Main extends Application{
         Parent root = FXMLLoader.load(getClass().getResource("/imageapex/main/resources/fxml/Home.fxml"));
         Scene scene = new Scene(new JFXDecorator(primaryStage, root), width, height);
 
+        //加载css样式文件
+        final ObservableList<String> stylesheets = scene.getStylesheets();
+        stylesheets.addAll(Main.class.getResource("imageapex/main/resources/css/main.css").toExternalForm());
+
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/imageapex/main/resources/icons/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
