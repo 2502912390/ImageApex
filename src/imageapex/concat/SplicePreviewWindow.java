@@ -27,6 +27,8 @@ public class SplicePreviewWindow extends Application {
     private SplicePreviewController sp;//
     private ArrayList<ImageModel> imageModelList;//要拼接的图像
 
+    String mode;//用于选择拼接方式 H V Grid
+
     @Override
     public void init() throws Exception {
         super.init();
@@ -54,7 +56,13 @@ public class SplicePreviewWindow extends Application {
         Scene scene = new Scene(new JFXDecorator(stage, root), windowWidth, windowHeight);
 
         sp = fxmlLoader.getController();  //通过FXMLLoader获取窗口的controller实例
-        sp.setImageModelList(imageModelList);//对imageModelList竖直拼接
+        if(mode.equals("H")){
+            sp.setImageModelList1(imageModelList);//对imageModelList横向拼接
+        } else if (mode.equals("V")) {
+            sp.setImageModelList0(imageModelList);//对imageModelList竖直拼接
+        }else{//九宫格
+            System.out.println("+++");
+        }
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
@@ -66,8 +74,9 @@ public class SplicePreviewWindow extends Application {
         stage.show();
     }
 
-    public void initImageList(ArrayList<ImageModel> imageModelList){
+    public void initImageList(ArrayList<ImageModel> imageModelList,String mode){
         this.imageModelList = imageModelList;
+        this.mode=mode;
     }
 
 }

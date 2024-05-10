@@ -114,7 +114,7 @@ public class PopupMenuController implements Initializable {
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张或以上图片进行拼接"));
                 } else {
-                    new CustomDialog(hc, DialogType.CHOICE, im, "选择拼接方式").show();
+                    new CustomDialog(hc, DialogType.CHOICE, im, "选择拼接方式",sourceList).show();
 
                     System.out.println("******");
 //                    SplicePreviewWindow previewWindow = new SplicePreviewWindow();
@@ -126,6 +126,7 @@ public class PopupMenuController implements Initializable {
 //                        e.printStackTrace();
 //                    }
                 }
+
                 imageBox.getPopUpMenu().hide();
                 break;
             case 5:

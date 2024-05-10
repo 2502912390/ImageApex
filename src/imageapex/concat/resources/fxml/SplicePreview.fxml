@@ -20,16 +20,15 @@
                 AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0"
                 AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
 
-<!--        原本-->
-<!--        <VBox fx:id="vBox">-->
-<!--            &lt;!&ndash;此处imageView不设置内容，仅为截图提供标记&ndash;&gt;-->
-<!--            <ImageView fx:id="imageView" style="-fx-margin:0;-fx-padding:0;"/>-->
-<!--        </VBox>-->
-
-
-        <HBox fx:id="hBox">
+        <!--        原本-->
+        <VBox fx:id="vBox0">
             <!--此处imageView不设置内容，仅为截图提供标记-->
-            <ImageView fx:id="imageView" style="-fx-margin:0;-fx-padding:0;"/>
+            <ImageView fx:id="imageView0" style="-fx-margin:0;-fx-padding:0;"/>
+        </VBox>
+
+        <HBox fx:id="hBox1">
+            <!--此处imageView不设置内容，仅为截图提供标记-->
+            <ImageView fx:id="imageView1" style="-fx-margin:0;-fx-padding:0;"/>
         </HBox>
         <!--        添加水平-->
 

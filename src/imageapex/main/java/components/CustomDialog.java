@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 自定义、可复用的对话框，减少使用对话框时的重复代码
@@ -50,6 +51,8 @@ public class CustomDialog extends JFXDialog {
     @Getter
     private JFXTextArea bodyTextArea;
     private JFXTextField bodyTextField;
+
+    private ArrayList<ImageModel> sourceList;//要拼接的图像
 
     @Getter
     private JFXDialogLayout layout = new JFXDialogLayout();
@@ -116,6 +119,15 @@ public class CustomDialog extends JFXDialog {
                         DialogType type, ImageModel targetImage,
                         String headingText) {
         this(controller, type, targetImage);
+        setHeadingLabel(headingText);
+    }
+
+    //图像拼接构造函数
+    public CustomDialog(AbstractController controller,
+                        DialogType type, ImageModel targetImage,
+                        String headingText,ArrayList<ImageModel> sourceList) {
+        this(controller, type, targetImage);
+        this.sourceList=sourceList;
         setHeadingLabel(headingText);
     }
 
@@ -289,22 +301,36 @@ public class CustomDialog extends JFXDialog {
         rightButton.setStyle("-fx-text-fill: #0022ff;");
 
         leftButton.setOnAction(event -> {
-
+            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+            previewWindow.initImageList(sourceList,"V");
+            //打开窗口
+            try {
+                previewWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
-        midButton.setOnAction(event -> {
-//            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
-//            previewWindow.initImageList(sourceList);
-//            //打开窗口
-//            try {
-//                previewWindow.start(new Stage());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+        midButton.setOnAction(event -> {//横向拼接
+            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+            previewWindow.initImageList(sourceList,"H");
+            //打开窗口
+            try {
+                previewWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         rightButton.setOnAction(event -> {
-
+            SplicePreviewWindow previewWindow = new SplicePreviewWindow();
+            previewWindow.initImageList(sourceList,"Grid");
+            //打开窗口
+            try {
+                previewWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 }
