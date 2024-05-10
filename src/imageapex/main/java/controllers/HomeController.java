@@ -423,8 +423,7 @@ public class HomeController extends AbstractController implements Initializable 
     private void searchImage() {
         String key = searchTextField.getText();
         if (key.equals("")) return; // 搜索内容为空时即返回
-        ArrayList<ImageModel> result =
-                SearchImageModel.fuzzySearch(key, curImgList);
+        ArrayList<ImageModel> result = SearchImageModel.fuzzySearch(key, curImgList);
         placeImages(result, currentPath);
         if (result.size() == 0) {
             folderInfoLabel.setText("未找到图片");

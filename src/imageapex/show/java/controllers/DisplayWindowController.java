@@ -1,6 +1,9 @@
 package imageapex.show.java.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.*;
 import javafx.scene.transform.Scale;
 import imageapex.show.DisplayWindow;
 import imageapex.show.java.model.Ocr;
@@ -18,14 +21,13 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Translate;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +39,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 /**
  * 展示窗口的控制器
  *
@@ -265,7 +268,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         };
         Timer timer = new Timer();
         long delay = 5000;  // 定义开始等待时间
-        long intervalPeriod = 5000;  //每次执行的间隔
+        long intervalPeriod = 3000;  //每次执行的间隔
         timer.scheduleAtFixedRate(task, delay, intervalPeriod); // 定时器执行
 
         //当鼠标点击时，暂停计时器，恢复工具栏
@@ -387,6 +390,95 @@ public class DisplayWindowController extends AbstractController implements Initi
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("没有图片执行压缩。压缩条件:大于800KB"));
         }
+    }
+
+//    @FXML //涂鸦
+//    private void edit() {
+//        // 获取原始图像
+//        Image originalImage = imageView.getImage();
+//        int width = (int) originalImage.getWidth();
+//        int height = (int) originalImage.getHeight();
+//
+//        // 创建可写图像对象
+//        WritableImage writableImage = new WritableImage(width, height);
+//        PixelReader pixelReader = originalImage.getPixelReader();
+//        PixelWriter pixelWriter = writableImage.getPixelWriter();
+//
+//        // 将原始图像的像素复制到可写图像中
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                Color color = pixelReader.getColor(x, y);
+//                pixelWriter.setColor(x, y, color);
+//            }
+//        }
+//
+//        // 将可写图像显示在 ImageView 中
+//        imageView.setImage(writableImage);
+//
+//        // 添加鼠标事件监听器
+//        imageView.setOnMouseDragged(event -> {
+//            // 获取鼠标位置
+//            double x = event.getX();
+//            double y = event.getY();
+//
+//            // 设置涂鸦颜色
+//            Color color = Color.RED;
+//
+//            // 在图像上绘制点
+//            int pixelX = (int) x;
+//            int pixelY = (int) y;
+//            if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+//                pixelWriter.setColor(pixelX, pixelY, color);
+//            }
+//        });
+//    }
+
+
+    private void edit() {
+        // 获取原始图像
+        Image originalImage = imageView.getImage();
+        int width = (int) originalImage.getWidth();
+        int height = (int) originalImage.getHeight();
+
+        // 创建可写图像对象
+        WritableImage writableImage = new WritableImage(width, height);
+        PixelReader pixelReader = originalImage.getPixelReader();
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        // 将原始图像的像素复制到可写图像中
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Color color = pixelReader.getColor(x, y);
+                pixelWriter.setColor(x, y, color);
+            }
+        }
+
+        // 将可写图像显示在 ImageView 中
+        imageView.setImage(writableImage);
+
+        // 设置涂鸦笔触的大小
+        double brushSize = 5.0;
+
+        // 添加鼠标事件监听器
+        imageView.setOnMouseDragged(event -> {
+            // 获取鼠标位置
+            double x = event.getX();
+            double y = event.getY();
+
+            // 设置涂鸦颜色
+            Color color = Color.BLACK;
+
+            // 根据笔触大小在图像上绘制点
+            for (int offsetX = (int) -brushSize; offsetX <= brushSize; offsetX++) {
+                for (int offsetY = (int) -brushSize; offsetY <= brushSize; offsetY++) {
+                    int pixelX = (int) (x + offsetX);
+                    int pixelY = (int) (y + offsetY);
+                    if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+                        pixelWriter.setColor(pixelX, pixelY, color);
+                    }
+                }
+            }
+        });
     }
 
 }

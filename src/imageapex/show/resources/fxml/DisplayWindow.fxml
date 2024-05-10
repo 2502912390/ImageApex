@@ -108,6 +108,15 @@
             </graphic>
         </JFXButton>
 
+        <JFXButton buttonType="FLAT" onAction="#edit"
+                   styleClass="bottom-toolbar-button" ripplerFill="white">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons2/edit.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
         <JFXButton buttonType="FLAT" onAction="#delete"
                    styleClass="bottom-toolbar-button" ripplerFill="white"
                    style="-fx-background-radius: 3 9 9 3;">
@@ -117,6 +126,7 @@
                 </ImageView>
             </graphic>
         </JFXButton>
+
     </HBox>
 
 </StackPane>

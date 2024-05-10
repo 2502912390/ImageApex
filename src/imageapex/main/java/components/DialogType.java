@@ -2,9 +2,6 @@ package imageapex.main.java.components;
 
 /**
  * 对话框类型
- *
- * @author Grey
- * @since 2020.05
  */
 
 public enum DialogType {
