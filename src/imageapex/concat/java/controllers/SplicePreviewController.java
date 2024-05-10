@@ -36,14 +36,15 @@ public class SplicePreviewController implements Initializable {
     private JFXButton saveButton;//保存按钮
     @FXML
     private ImageView imageView;
+
     @FXML
     private ScrollPane scrollPane;
 
-    @FXML
-    private VBox vBox;//存储竖直拼接后的图像
+//    @FXML
+//    private VBox vBox;//存储竖直拼接后的图像
 
      @FXML
-     private HBox hBox;
+     private HBox hBox;//存储水平拼接后图像
 
     private ImageModel imageModel;
 
@@ -53,9 +54,13 @@ public class SplicePreviewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(0);
+//        vBox.setAlignment(Pos.CENTER);
+//        vBox.setSpacing(0);
+
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(0);
 
         //该类放入全局映射
         ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
@@ -69,54 +74,53 @@ public class SplicePreviewController implements Initializable {
 
     //先调用这个设置好图片，否则会导致空指针 bug
     //将set图片竖直拼接
-    public void setImageModelList(ArrayList<ImageModel> set) {
-        this.imageModelList = set;
-        scrollPane.setContent(vBox);
+//    public void setImageModelList(ArrayList<ImageModel> set) {
+//        this.imageModelList = set;
+//        scrollPane.setContent(vBox);
+//
+//        int number = 0;
+//        //将图片加入到垂直盒子中
+//        for (ImageModel im : imageModelList) {
+//            Image image = new Image(im.getImageFile().toURI().toString());
+//            ImageView imageView = new ImageView(image);
+//
+//            if (number == 0) {
+//                this.imageModel = im;
+//                this.imageView = imageView;
+//                number++;
+//            }
+//
+//            imageView.setSmooth(true);
+//            imageView.setFitWidth(800); //此处指定了拼接出的图片的宽度，注释掉此句则保持原图尺寸
+//            imageView.setPreserveRatio(true);
+//            imageView.setStyle("-fx-margin:0;-fx-padding:0;");
+//
+//            vBox.getChildren().add(imageView);//拼接
+//        }
+//    }
 
-        int number = 0;
-        //将图片加入到垂直盒子中
-        for (ImageModel im : imageModelList) {
-            Image image = new Image(im.getImageFile().toURI().toString());
-            ImageView imageView = new ImageView(image);
+     public void setImageModelList(ArrayList<ImageModel> set) {
+         this.imageModelList = set;
+         scrollPane.setContent(hBox);
 
-            if (number == 0) {
-                this.imageModel = im;
-                this.imageView = imageView;
-                number++;
-            }
+         int number = 0;
+         for (ImageModel im : imageModelList) {
+             Image image = new Image(im.getImageFile().toURI().toString());
+             ImageView imageView = new ImageView(image);
 
-            imageView.setSmooth(true);
-            imageView.setFitWidth(800); //此处指定了拼接出的图片的宽度，注释掉此句则保持原图尺寸
-            imageView.setPreserveRatio(true);
-            imageView.setStyle("-fx-margin:0;-fx-padding:0;");
+             if (number == 0) {
+                 this.imageModel = im;
+                 this.imageView = imageView;
+                 number++; // 计数器加1
+             }
 
-            vBox.getChildren().add(imageView);//拼接
-        }
-    }
-
-    // public void setImageModelList(ArrayList<ImageModel> set) {
-    //     this.imageModelList = set; // 将传入的图片模型列表赋值给当前对象的imageModelList属性
-    //     scrollPane.setContent(hBox); // 将水平盒子设置为滚动面板的内容
-
-    //     int number = 0; // 初始化计数器
-    //     // 遍历图片模型列表
-    //     for (ImageModel im : imageModelList) {
-    //         Image image = new Image(im.getImageFile().toURI().toString()); // 创建Image对象，使用图片模型的文件路径作为参数
-    //         ImageView imageView = new ImageView(image); // 创建ImageView对象，并将Image对象作为参数传入
-
-    //         if (number == 0) {
-    //             this.imageModel = im; // 如果是第一个图片模型，将其赋值给当前对象的imageModel属性
-    //             this.imageView = imageView; // 将对应的ImageView对象赋值给当前对象的imageView属性
-    //             number++; // 计数器加1
-    //         }
-
-    //         imageView.setSmooth(true); // 设置图片平滑处理
-    //         imageView.setFitHeight(600); // 设置图片的高度为600像素
-    //         imageView.setPreserveRatio(true); // 保持图片的宽高比
-    //         imageView.setStyle("-fx-margin:0;-fx-padding:0;"); // 设置图片的样式，去除外边距和内边距
-    //         hBox.getChildren().add(imageView); // 将ImageView对象添加到水平盒子中
-    //     }
-    // }
+             imageView.setSmooth(true);
+             imageView.setFitHeight(600);
+             imageView.setPreserveRatio(true);
+             imageView.setStyle("-fx-margin:0;-fx-padding:0;");
+             hBox.getChildren().add(imageView);
+         }
+     }
 
     //九宫格
     // public void setImageModelList(ArrayList<ImageModel> set) {
@@ -180,5 +184,4 @@ public class SplicePreviewController implements Initializable {
             e.printStackTrace();
         }
     }
-
 }

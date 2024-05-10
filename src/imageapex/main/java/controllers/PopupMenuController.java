@@ -20,11 +20,6 @@ import java.util.ResourceBundle;
 
 /**
  * 缩略图的右键菜单控制器
- *
- * @see imageapex.main.java.controllers.AbstractController
- * @link imageapex.main/resources/fxml/PopupMenu.fxml
- * @author Grey
- * @since 2020.04
  */
 
 public class PopupMenuController implements Initializable {
