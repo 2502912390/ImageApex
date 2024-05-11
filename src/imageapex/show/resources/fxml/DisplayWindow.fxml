@@ -128,7 +128,6 @@
             </graphic>
         </JFXButton>
 
-
         <JFXButton fx:id="saveButton" buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
                    onAction="#snap">
             <graphic>

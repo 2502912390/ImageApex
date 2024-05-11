@@ -2,14 +2,14 @@ package imageapex.show.java.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
-import imageapex.concat.SplicePreviewWindow;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.image.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import imageapex.show.DisplayWindow;
-import imageapex.show.java.model.Ocr;
 import imageapex.main.java.components.CustomDialog;
 import imageapex.main.java.components.DialogType;
 import imageapex.main.java.controllers.AbstractController;
@@ -20,7 +20,6 @@ import imageapex.main.java.model.ImageModel;
 import imageapex.show.java.model.SwitchPics;
 import imageapex.main.java.model.SelectedModel;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,8 +44,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 
@@ -87,6 +85,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     private double radius;
 
     private PixelWriter pixelWriter;
+    private ColorPicker colorPicker;
 
     public DisplayWindowController() {
 
@@ -104,6 +103,12 @@ public class DisplayWindowController extends AbstractController implements Initi
         snackbar = new JFXSnackbar(rootPane);
         stage = DisplayWindow.getStage();
         radius=6.0;
+
+        // 创建一个ColorPicker组件 用于选择颜色
+        colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.RED);
+        toolbar.getChildren().add(colorPicker);
+        colorPicker.setVisible(false);//只有编辑才会显现
 
         System.out.println("Display window initialization done...");
     }
@@ -475,8 +480,9 @@ public class DisplayWindowController extends AbstractController implements Initi
     private void edit() {
         System.out.println("11111111111");
         saveButton.setVisible(true);
+        colorPicker.setVisible(true);
 
-        //bug? 刚刚初始化 image为null
+        //bug? 初始化 image为null
         width = (int) image.getWidth();
         height = (int) image.getHeight();
 
@@ -501,9 +507,6 @@ public class DisplayWindowController extends AbstractController implements Initi
             double x = event.getX();
             double y = event.getY();
 
-            // 设置涂鸦颜色
-            Color color = Color.RED;
-
             imageView.setOnScroll(new EventHandler<ScrollEvent>() {
                 @Override
                 public void handle(ScrollEvent event) {
@@ -526,11 +529,13 @@ public class DisplayWindowController extends AbstractController implements Initi
                         int pixelX = i;
                         int pixelY = j;
                         if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
-                            pixelWriter.setColor(pixelX, pixelY, color);
+//                            pixelWriter.setColor(pixelX, pixelY, colorPicker.getValue());
+                            pixelWriter.setColor(pixelX, pixelY, colorPicker.getValue());
                         }
                     }
                 }
             }
+
         });
     }
 }
