@@ -1,6 +1,9 @@
 package imageapex.show.java.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
+import imageapex.concat.SplicePreviewWindow;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.*;
@@ -31,23 +34,24 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.Date;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+
+import javax.imageio.ImageIO;
+
 /**
  * 展示窗口的控制器
- *
- * @author Grey
- * @author tudou daren
- * @see imageapex.main.java.controllers.AbstractController
- * @since 2020.05
  */
 public class DisplayWindowController extends AbstractController implements Initializable {
 
@@ -56,6 +60,9 @@ public class DisplayWindowController extends AbstractController implements Initi
     public StackPane rootPane;
     public HBox toolbar;
     private Stage stage; //获取当前窗口
+
+    @FXML
+    public JFXButton saveButton;
 
     @FXML
     @Setter
@@ -76,6 +83,9 @@ public class DisplayWindowController extends AbstractController implements Initi
     private int width ;
     private int height ;
 
+    // 设置涂鸦的圆形半径
+    private double radius;
+
     private PixelWriter pixelWriter;
 
     public DisplayWindowController() {
@@ -88,10 +98,12 @@ public class DisplayWindowController extends AbstractController implements Initi
         hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
+
+        saveButton.setVisible(false);//默认不可见，只有点击编辑才可见
+
         snackbar = new JFXSnackbar(rootPane);
         stage = DisplayWindow.getStage();
-
-
+        radius=6.0;
 
         System.out.println("Display window initialization done...");
     }
@@ -187,32 +199,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             }
         });
 
-        // bug 添加涂鸦后拖拽会失效
-        imageView.setOnMouseDragged(event -> {
-            // 获取鼠标位置
-            double x = event.getX();
-            double y = event.getY();
-
-            // 设置涂鸦颜色
-            Color color = Color.RED;
-
-            // 设置圆形半径
-            int radius = 10; // 可以根据需要调整圆形半径
-
-            // 在以鼠标位置为中心的圆形区域内绘制像素点
-            for (int i = (int) (x - radius); i <= x + radius; i++) {
-                for (int j = (int) (y - radius); j <= y + radius; j++) {
-                    // 检查当前像素点是否在圆形内
-                    if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius) {
-                        int pixelX = i;
-                        int pixelY = j;
-                        if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
-                            pixelWriter.setColor(pixelX, pixelY, color);
-                        }
-                    }
-                }
-            }
-        });
+        // bug 添加涂鸦后拖拽会失效 解决 原因是冲突了
     }
 
     /**
@@ -220,6 +207,8 @@ public class DisplayWindowController extends AbstractController implements Initi
      */
     @FXML
     private void initStatus() {
+//        saveButton.setVisible(false);
+
         imageView.setScaleX(1.0);
         imageView.setScaleY(1.0);
         imageView.getTransforms().clear();
@@ -228,12 +217,16 @@ public class DisplayWindowController extends AbstractController implements Initi
     //-------------以下为工具栏按钮事件---------------
     @FXML
     private void zoomIn() {
+//        saveButton.setVisible(false);
+
         imageView.setScaleX(imageView.getScaleX() * 1.25);
         imageView.setScaleY(imageView.getScaleY() * 1.25);
     }
 
     @FXML
     private void zoomOut() {
+//        saveButton.setVisible(false);
+
         imageView.setScaleX(imageView.getScaleX() * 0.75);
         imageView.setScaleY(imageView.getScaleY() * 0.75);
     }
@@ -241,6 +234,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     //上一张图
     @FXML
     private void showPreviousImg() throws IOException {
+        saveButton.setVisible(false);
+
         initStatus();
 
         //为了防止删除后显示空白，自动刷新
@@ -260,6 +255,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     //下一张图
     @FXML
     public void showNextImg() throws IOException {
+        saveButton.setVisible(false);
+
         initStatus();
 
         //为了防止删除后显示空白，自动刷新
@@ -280,8 +277,11 @@ public class DisplayWindowController extends AbstractController implements Initi
     @FXML
     //幻灯片放映
     private void playSlide() {
+        saveButton.setVisible(false);
+
         initStatus();   //比例重新设定
         toolbar.setVisible(false);  //使工具栏不可见
+
         stage.setFullScreen(true);  //设置窗口为全屏
         snackbar.enqueue(new JFXSnackbar.SnackbarEvent("开始幻灯片放映，点击任意键结束"));
 
@@ -323,6 +323,8 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     //停止幻灯片播放
     private void stopSlide(Timer timer, Stage stage) {
+        saveButton.setVisible(false);
+
         timer.cancel();
         toolbar.setVisible(true);
         stage.setFullScreen(false);
@@ -336,38 +338,42 @@ public class DisplayWindowController extends AbstractController implements Initi
         });
     }
 
-    @FXML
-    private void ocr() {
-        CustomDialog loading = new CustomDialog(this, DialogType.INFO, imageModel, "正在处理");
-        loading.setLoadingSpinner();
-        loading.show();
-
-        Task ocrTask = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                //执行OCR识别，在成功后关闭加载窗口
-                String path = imageModel.getImageFilePath();
-                File file = new File(path);
-                if (!file.exists()) {
-                    System.out.println("图片不存在!");
-                }
-                String result = Ocr.doOcr(path, Ocr.ENG);
-                loading.close();
-                updateMessage(result);   //向监听器更新结果
-                return true;
-            }
-        };
-        //设置加载任务的监听，在接收到信息回传时展示结果
-        ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
-            CustomDialog dialog = new CustomDialog(this, DialogType.INFO, imageModel, "识别结果");
-            dialog.setBodyLabel(newValue);
-            dialog.show();
-        });
-        new Thread(ocrTask).start(); //启动新的线程进行识别任务
-    }
+//    @FXML
+//    private void ocr() {
+//        saveButton.setVisible(false);
+//
+//        CustomDialog loading = new CustomDialog(this, DialogType.INFO, imageModel, "正在处理");
+//        loading.setLoadingSpinner();
+//        loading.show();
+//
+//        Task ocrTask = new Task() {
+//            @Override
+//            protected Object call() throws Exception {
+//                //执行OCR识别，在成功后关闭加载窗口
+//                String path = imageModel.getImageFilePath();
+//                File file = new File(path);
+//                if (!file.exists()) {
+//                    System.out.println("图片不存在!");
+//                }
+//                String result = Ocr.doOcr(path, Ocr.ENG);
+//                loading.close();
+//                updateMessage(result);   //向监听器更新结果
+//                return true;
+//            }
+//        };
+//        //设置加载任务的监听，在接收到信息回传时展示结果
+//        ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
+//            CustomDialog dialog = new CustomDialog(this, DialogType.INFO, imageModel, "识别结果");
+//            dialog.setBodyLabel(newValue);
+//            dialog.show();
+//        });
+//        new Thread(ocrTask).start(); //启动新的线程进行识别任务
+//    }
 
     @FXML
     public void showInfo() {
+        saveButton.setVisible(false);
+
         if (imageModel == null) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无属性展示"));
             return;
@@ -386,6 +392,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     //删除
     @FXML
     private void delete() {
+        saveButton.setVisible(false);
+
         if (imageModel == null) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("无文件可删除"));
             return;
@@ -398,6 +406,8 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     private void fullScreen() {
+//        saveButton.setVisible(false);
+
         if (stage.isFullScreen()) {
             stage.setFullScreen(false);
             stage.sizeToScene();
@@ -408,6 +418,8 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @FXML
     private void compress() {
+        saveButton.setVisible(false);
+
         SelectedModel.setSourcePath(imageModel.getImageFilePath());
         int success = SelectedModel.compressImage(800);
         if (success != 0) {
@@ -425,8 +437,45 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
+    //实现涂鸦照片保存功能
+    @FXML
+    private void snap(){
+//        System.out.println("222222");//for_test
+        if(saveButton.isVisible()){//bug
+            WritableImage wa = imageView.snapshot(null, null);//+++ 编辑像素操作/颜色处理
+
+            //设置图片名字包含当前系统时间
+            Date date = new Date();
+            Stage stage = (Stage) imageView.getScene().getWindow();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+
+            String prefix = imageModel.getImageNameNoExt();//获取不带扩展名的名字
+            try {
+                BufferedImage buff = SwingFXUtils.fromFXImage(wa, null);
+                System.out.println("buff = " + buff);
+
+                //保存为png格式图像
+                ImageIO.write(buff, "png",
+                        //保存到当前文件夹
+                        new File(imageModel.getImageParentPath() + "\\" + prefix + "_edit_" + dateFormat.format(date) + ".png"));
+
+                //刷新界面
+                hc.refreshImagesList(hc.getSortComboBox().getValue());
+                stage.close(); //为了处理卡顿关闭该窗口
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("涂鸦副本保存成功")); //信息条提示
+            } catch (IOException e) {
+                stage.close();
+                snackbar.enqueue(new JFXSnackbar.SnackbarEvent("保存失败"));
+                e.printStackTrace();
+            }
+        }
+    }
+
     @FXML //涂鸦
     private void edit() {
+        System.out.println("11111111111");
+        saveButton.setVisible(true);
+
         //bug? 刚刚初始化 image为null
         width = (int) image.getWidth();
         height = (int) image.getHeight();
@@ -447,6 +496,42 @@ public class DisplayWindowController extends AbstractController implements Initi
         // 将可写图像显示在 ImageView 中
         imageView.setImage(writableImage);
 
+        imageView.setOnMouseDragged(event -> {
+            // 获取鼠标位置
+            double x = event.getX();
+            double y = event.getY();
+
+            // 设置涂鸦颜色
+            Color color = Color.RED;
+
+            imageView.setOnScroll(new EventHandler<ScrollEvent>() {
+                @Override
+                public void handle(ScrollEvent event) {
+                    //如果滚轮向下滑动，缩小
+                    if (event.getDeltaY() < 0) {
+                        radius=radius*0.9;
+                    }
+                    //如果滚轮向上滑动，放大
+                    if (event.getDeltaY() > 0) {
+                        radius=radius*1.1;
+                    }
+                }
+            });
+
+            // 在以鼠标位置为中心的圆形区域内绘制像素点
+            for (int i = (int) (x - radius); i <= x + radius; i++) {
+                for (int j = (int) (y - radius); j <= y + radius; j++) {
+                    // 检查当前像素点是否在圆形内
+                    if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius) {
+                        int pixelX = i;
+                        int pixelY = j;
+                        if (pixelX >= 0 && pixelX < width && pixelY >= 0 && pixelY < height) {
+                            pixelWriter.setColor(pixelX, pixelY, color);
+                        }
+                    }
+                }
+            }
+        });
     }
 }
 

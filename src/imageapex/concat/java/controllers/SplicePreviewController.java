@@ -113,7 +113,8 @@ public class SplicePreviewController implements Initializable {
         }
     }
 
-     public void setImageModelList1(ArrayList<ImageModel> set) {
+    //水平
+    public void setImageModelList1(ArrayList<ImageModel> set) {
         this.mode="H";
          this.imageModelList = set;
          scrollPane.setContent(hBox1);
@@ -138,7 +139,7 @@ public class SplicePreviewController implements Initializable {
      }
 
     //九宫格
-     public void setImageModelList2(ArrayList<ImageModel> set) {
+    public void setImageModelList2(ArrayList<ImageModel> set) {
          this.mode="Grid";
          this.imageModelList = set;
          scrollPane.setContent(gridPane);
@@ -170,6 +171,12 @@ public class SplicePreviewController implements Initializable {
          }
      }
 
+
+     //涂鸦
+    public void setImageModelList3(ArrayList<ImageModel> set){
+
+    }
+
     //截图 = 保存 与saveButton绑定
     @FXML
     private void snap() {
@@ -182,7 +189,7 @@ public class SplicePreviewController implements Initializable {
         }else if(this.mode.equals("V")){
             wa = imageView0.getParent().snapshot(null, null);
             stage = (Stage) imageView0.getScene().getWindow();
-        }else{
+        }else {
 //            System.out.println("99999");//for_test
             wa = gridPane.getParent().snapshot(null, null);
             stage= (Stage) gridPane.getScene().getWindow();

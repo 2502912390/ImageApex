@@ -60,14 +60,17 @@ public class SplicePreviewWindow extends Application {
             sp.setImageModelList1(imageModelList);//对imageModelList横向拼接
         } else if (mode.equals("V")) {
             sp.setImageModelList0(imageModelList);//对imageModelList竖直拼接
-        }else{//九宫格
+        }else if(mode.equals("Grid")){//九宫格
 //            System.out.println("999");//for_test
             sp.setImageModelList2(imageModelList);
+        }else{//涂鸦
+
         }
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(this.getClass().getResource("/imageapex/concat/resources/css/concat.css").toExternalForm());
+
 
         stage.setTitle("图片拼接预览");
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/imageapex/main/resources/icons/app.png")));
@@ -79,5 +82,4 @@ public class SplicePreviewWindow extends Application {
         this.imageModelList = imageModelList;
         this.mode=mode;
     }
-
 }

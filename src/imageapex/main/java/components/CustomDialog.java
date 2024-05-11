@@ -283,6 +283,7 @@ public class CustomDialog extends JFXDialog {
         });
     }
 
+    //选择拼接弹窗
     private void makeChoiceDialog() {
         leftButton.setText("竖直拼接");
         leftButton.setStyle("-fx-text-fill: #ff0000;");

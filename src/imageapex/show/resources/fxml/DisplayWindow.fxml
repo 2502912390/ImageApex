@@ -14,6 +14,7 @@
 
     </ImageView>
 
+<!--    工具栏-->
     <HBox fx:id="toolbar" alignment="CENTER"
           styleClass="bottom-toolbar" maxHeight="33" maxWidth="300" style="-fx-padding:0 6 0 6;">
 
@@ -81,14 +82,14 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton buttonType="FLAT" onAction="#ocr"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
-            <graphic>
-                <ImageView fitWidth="33" preserveRatio="true">
-                    <Image url="@../icons2/ocr2.png"/>
-                </ImageView>
-            </graphic>
-        </JFXButton>
+<!--        <JFXButton buttonType="FLAT" onAction="#ocr"-->
+<!--                   styleClass="bottom-toolbar-button" ripplerFill="white">-->
+<!--            <graphic>-->
+<!--                <ImageView fitWidth="33" preserveRatio="true">-->
+<!--                    <Image url="@../icons2/ocr2.png"/>-->
+<!--                </ImageView>-->
+<!--            </graphic>-->
+<!--        </JFXButton>-->
 
         <JFXButton buttonType="FLAT" onAction="#showInfo"
                    styleClass="bottom-toolbar-button" ripplerFill="white">
@@ -127,6 +128,15 @@
             </graphic>
         </JFXButton>
 
+
+        <JFXButton fx:id="saveButton" buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
+                   onAction="#snap">
+            <graphic>
+                <ImageView fitWidth="33" preserveRatio="true">
+                    <Image url="@../icons/save.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
     </HBox>
 
 </StackPane>

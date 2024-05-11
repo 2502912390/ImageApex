@@ -13,7 +13,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("ImageApex");
@@ -21,6 +20,7 @@ public class Main extends Application{
         //根据屏幕大小自适应设置长宽
         double width = 800;
         double height = 600;
+
         try {
             Rectangle2D bounds = Screen.getScreens().get(0).getBounds();
             width = bounds.getWidth() / 1.45;
