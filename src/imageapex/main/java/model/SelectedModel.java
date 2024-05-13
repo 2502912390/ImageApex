@@ -36,7 +36,7 @@ public class SelectedModel {//被选中照片操作类
 
     @Setter
     @Getter
-    private static int copyOrMove = -1; // 选择标志位 0->复制 1->剪切
+    private static int copyOrCut = -1; // 选择标志位 0->复制 1->剪切
 
     @Getter
     @Setter
@@ -91,7 +91,7 @@ public class SelectedModel {//被选中照片操作类
 
         if (singleOrMultiple == 0) {//单选粘贴
             try {
-                microPaste(path);
+                pasteAndCut(path);
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
@@ -100,7 +100,7 @@ public class SelectedModel {//被选中照片操作类
             try {
                 for (Path p : sourcePathList) {
                     sourcePath = p;
-                    microPaste(path);
+                    pasteAndCut(path);
                 }
             } catch (IOException e) {
                 System.err.println("粘贴失败");
@@ -126,8 +126,8 @@ public class SelectedModel {//被选中照片操作类
         return true;
     }
 
-    private static void microPaste(String path) throws IOException {// 根据copyOrMove复制、剪切操作
-        if (copyOrMove == 0) {//复制
+    private static void pasteAndCut(String path) throws IOException {// 根据copyOrCut复制、剪切操作
+        if (copyOrCut == 0) {//copyOrCut变量值为0时进行复制操作
             if (getBeforePath().equals(path)) {//将该图片复制到当前文件夹
                 boolean flag = false;//当前文件夹是否有重复图片标志位
 
@@ -161,16 +161,15 @@ public class SelectedModel {//被选中照片操作类
                     show();
                 }
             }
-        } else if (copyOrMove == 1) {//剪切
+        }
+        else if (copyOrCut == 1) {//copyOrCut变量值为1时进行剪切操作
             targetPath = new File(otherPath(path)).toPath();
-
             if (imageRepeat(path))//有重复
                 coverImage++;
             Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);//不管目标路径是否有重复 直接覆盖
             havePastedNum++;
-
             if (havePastedNum == waitingPasteNum)
-                copyOrMove = -1;  // 剪切完了以后就置 -1 -> 使得按粘贴键没反应
+                copyOrCut = -1;  // 剪切完了以后就置 -1 -> 使得按粘贴键没反应
         }
     }
 

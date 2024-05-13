@@ -10,9 +10,7 @@ import imageapex.main.java.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import lombok.Getter;
-import imageapex.concat.SplicePreviewWindow;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -66,7 +64,7 @@ public class PopupMenuController implements Initializable {
                     SelectedModel.setSourcePath(sourceList);
                     SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
-                SelectedModel.setCopyOrMove(0);
+                SelectedModel.setCopyOrCut(0);
 
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
@@ -80,7 +78,7 @@ public class PopupMenuController implements Initializable {
                     SelectedModel.setSourcePath(sourceList);
                     SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
-                SelectedModel.setCopyOrMove(1);
+                SelectedModel.setCopyOrCut(1);
 
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
