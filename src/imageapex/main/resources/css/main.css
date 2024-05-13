@@ -35,12 +35,12 @@
 }
 
 .main-color {
-  -fx-fill: #009688;
+  -fx-fill: #8A2BE2 ;
 }
 
 /***主窗口样式***/
 .jfx-decorator {
-  -fx-decorator-color: derive(#009688, -20%);
+  -fx-decorator-color: derive(#8A2BE2 , -20%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -65,7 +65,7 @@
 
 /***上方工具栏样式***/
 .toolbar {
-  -fx-background-color: #009688;
+  -fx-background-color:  #4B0082;
   -fx-padding: 10;
 }
 
@@ -119,7 +119,7 @@
   -fx-min-height: -fx-pref-height;
   -fx-max-height: -fx-pref-height;
   -jfx-button-type: RAISED;
-  -fx-background-color: #009688;
+  -fx-background-color: #FF00FF;
   -fx-background-radius: 60px;
 }
 
@@ -154,7 +154,7 @@
 }
 
 .custom-jfx-list-view .sublist-item {
-  -fx-border-color: #e0e0e0;
+  -fx-border-color: #FF00FF;
   -fx-border-width: 1 0 1 0;
 }
 
@@ -189,8 +189,8 @@
 
 /* 菜单栏选中并移动到二级菜单时一级选中菜单的样式 */
 .menu-bar > .container > .menu-button:showing {
-  -fx-background-color: #ccccce;
-  -fx-border-color: #ccccce;
+  -fx-background-color: #FF00FF;
+  -fx-border-color: #FF00FF;
 }
 
 .menu-button {
@@ -199,18 +199,18 @@
   -fx-border-color: #f0f0f0;
 }
 .menu-button:hover {
-  -fx-background-color: #ccccce;
-  -fx-border-color: #ccccce;
+  -fx-background-color: #FF00FF;
+  -fx-border-color: #FF00FF;
 }
 .menu-button > .label,
 .menu-item > .label {
   -fx-text-fill: BLACK;
 }
 .menu-item:focused {
-  -fx-background-color: #ccccce;
+  -fx-background-color: #FF00FF;
 }
 .menu:focused > .right-container > .arrow {
-  -fx-background-color: #ccccce;
+  -fx-background-color: #FF00FF;
 }
 
 /*******************************************************************************
@@ -237,7 +237,7 @@
 
 .dialog-text-area {
   -fx-font-size: 18px;
-  -jfx-focus-color: #009688;
+  -jfx-focus-color: #8A2BE2;
   -jfx-unfocus-color: #4d4d4d;
 }
 
@@ -249,7 +249,7 @@
 }
 
 .dialog-confirm {
-  -fx-text-fill: #009688;
+  -fx-text-fill: #8A2BE2;
   /* -fx-font-weight: BOLD; */
   -fx-font-size: 16px;
   -fx-padding: 0.7em 0.8em;
@@ -267,15 +267,10 @@
   -fx-alignment: top-left;
   -fx-min-width: 450;
   -fx-padding: 15px;
-  -jfx-focus-color: #009688;
+  -jfx-focus-color: #8A2BE2;
   -jfx-unfocus-color: #4d4d4d;
 }
 
-/*******************************************************************************
- *                                                                             *
- * JFX SnackBar                                                                 *
- *                                                                             *
- ******************************************************************************/
 
 .jfx-snackbar-content {
   -fx-background-color: #323232;

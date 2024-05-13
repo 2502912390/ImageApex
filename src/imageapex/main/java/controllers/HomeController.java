@@ -481,13 +481,13 @@ public class HomeController extends AbstractController implements Initializable 
         icon.setFitHeight(100);
         icon.setPreserveRatio(true);
 
-        Label author = new Label("Made with ♥ by\n" + "Kevin & Grey & tudou daren\n\n");
+        Label author = new Label("Author:\n" + "陈志超  杨生源  温鑫\n\n");
         author.getStyleClass().add("normal-text-b");
         author.setTextAlignment(TextAlignment.CENTER);
 
         String repo = "Source code:\n" +
-                "https://github.com/greyovo/imageapex\n" +
-                "https://gitee.com/kevin996/OnlyViewer\n";
+                "www.91.com\n" +
+                "www.pornhub.com\n";
 
         JFXTextArea bodyTextArea = new JFXTextArea(repo);
         bodyTextArea.getStyleClass().addAll("dialog-text-area", "dialog-body");
@@ -497,7 +497,7 @@ public class HomeController extends AbstractController implements Initializable 
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(icon, author, bodyTextArea);
 
-        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null, "关于 OnlyViewer");
+        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null, "关于 ImageApex");
         dialog.setBodyContent(vBox);
         dialog.show();
     }

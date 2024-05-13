@@ -6,7 +6,7 @@
 
 /***主窗口样式***/
 .jfx-decorator {
-  -fx-decorator-color: derive(#009688, -10%);
+  -fx-decorator-color: derive(#D8BFD8, -10%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {
@@ -32,7 +32,7 @@
 .context-menu {
   -fx-padding: 2;
   -fx-border-width: 0;
-  -fx-background-color: rgb(242, 242, 242, 0.96); /*0.87*/
+  -fx-background-color: rgb(238, 130, 238, 0.96); /*0.87*/
   -fx-pref-width: 120px;
   /*-fx-background-radius:2px;*/
   /* -fx-effect:dropshadow(three-pass-box, #F2F2F2, 1, 0, 0, 0);  */
@@ -70,7 +70,7 @@
  *                                                                             *
  ******************************************************************************/
 .bottom-toolbar {
-  -fx-background-color: rgba(50, 50, 50, 0.65);
+  -fx-background-color: rgba(138, 43, 226, 0.65);
   -fx-background-radius: 11px;
   -jfx-rippler-fill: WHITE;
   /* -fx-padding:10; */

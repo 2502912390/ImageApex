@@ -1,6 +1,6 @@
 /***主窗口样式***/
 .jfx-decorator {
-    -fx-decorator-color: derive(#009688, -10%);
+    -fx-decorator-color: derive(#8A2BE2, -10%);
   }
   
   .jfx-decorator .jfx-decorator-buttons-container {
@@ -28,7 +28,7 @@
   -fx-pref-height: 45px;
   -fx-padding: 13;
   -jfx-button-type: RAISED;
-  -fx-background-color: #009688;
+  -fx-background-color: #8A2BE2;
   -fx-background-radius: 60;
   -jfx-rippler-fill: WHITE;
 }

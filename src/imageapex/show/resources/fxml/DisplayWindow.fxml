@@ -19,7 +19,7 @@
           styleClass="bottom-toolbar" maxHeight="33" maxWidth="300" style="-fx-padding:0 6 0 6;">
 
         <JFXButton buttonType="FLAT" onAction="#zoomIn"
-                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet"
                    style="-fx-background-radius: 9 0 0 9;">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
@@ -29,7 +29,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#zoomOut"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/zoom_out.png"/>
@@ -38,7 +38,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#initStatus"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/one_to_one.png"/>
@@ -47,7 +47,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#fullScreen"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/full-screen.png"/>
@@ -56,7 +56,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#showPreviousImg"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/previous.png"/>
@@ -65,7 +65,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#playSlide"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="45" preserveRatio="true">
                     <Image url="@../icons2/play.png"/>
@@ -74,7 +74,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#showNextImg"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/next.png"/>
@@ -82,17 +82,8 @@
             </graphic>
         </JFXButton>
 
-<!--        <JFXButton buttonType="FLAT" onAction="#ocr"-->
-<!--                   styleClass="bottom-toolbar-button" ripplerFill="white">-->
-<!--            <graphic>-->
-<!--                <ImageView fitWidth="33" preserveRatio="true">-->
-<!--                    <Image url="@../icons2/ocr2.png"/>-->
-<!--                </ImageView>-->
-<!--            </graphic>-->
-<!--        </JFXButton>-->
-
         <JFXButton buttonType="FLAT" onAction="#showInfo"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/info.png"/>
@@ -101,7 +92,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#compress"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/compress.png"/>
@@ -110,7 +101,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#edit"
-                   styleClass="bottom-toolbar-button" ripplerFill="white">
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
                     <Image url="@../icons2/edit.png"/>
@@ -119,7 +110,7 @@
         </JFXButton>
 
         <JFXButton buttonType="FLAT" onAction="#delete"
-                   styleClass="bottom-toolbar-button" ripplerFill="white"
+                   styleClass="bottom-toolbar-button" ripplerFill="blueviolet"
                    style="-fx-background-radius: 3 9 9 3;">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
@@ -128,7 +119,7 @@
             </graphic>
         </JFXButton>
 
-        <JFXButton fx:id="saveButton" buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="white"
+        <JFXButton fx:id="saveButton" buttonType="FLAT" styleClass="bottom-toolbar-button" ripplerFill="blueviolet"
                    onAction="#snap">
             <graphic>
                 <ImageView fitWidth="33" preserveRatio="true">
