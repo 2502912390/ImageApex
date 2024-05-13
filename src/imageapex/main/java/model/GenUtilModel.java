@@ -4,20 +4,13 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * @ProjName: OnlyViewer
- * @ClassName: GenUtilModel
- * @Author: Kevin
- * @Time:2020/3/30 15:37
- * @Describe: 通用的方法类 仅限包内调用 方法缺省修饰
- **/
-
 public class GenUtilModel {
     private static final double KB = 1024.0;
     private static final double MB = 1024.0*1024.0;
     private static final double GB = 1024.0*1024.0*1024.0;
 
-    public static String getFormatSize(long fileLength){
+
+    public static String getFormatSize(long fileLength){//将文件大小转字符串返回
         String Standardsize = null;
         if (fileLength < KB){
             Standardsize = String.format("%d Byte", fileLength);
@@ -31,13 +24,14 @@ public class GenUtilModel {
         return Standardsize;
     }
 
-    public static String getFormatTime(long time){
+
+    public static String getFormatTime(long time){//将给定的时间戳（以毫秒为单位）转换为格式化的日期字符串
         Date data = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return sdf.format(data);
     }
 
-    static byte[] getByteByFile(File file){
+    static byte[] getByteByFile(File file){//将一个文件转换为字节数组
         try(FileInputStream fis = new FileInputStream(file);
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1024)){
             byte[] bytes = new byte[1024];
@@ -52,7 +46,7 @@ public class GenUtilModel {
         return null;
     }
 
-    static boolean getFileByByte(byte[] bytes, File file) {
+    static boolean getFileByByte(byte[] bytes, File file) {//将字节数组写入到指定的文件中
         try (FileOutputStream fos = new FileOutputStream(file);
              BufferedOutputStream bos = new BufferedOutputStream(fos)){
             bos.write(bytes);

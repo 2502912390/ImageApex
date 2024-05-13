@@ -7,12 +7,9 @@ import javafx.scene.image.ImageView;
 /**
  * 继承自JavaFX的ImageView。
  * 默认使用JFXDepthManager添加投影。
- *
- * @author Grey
- * @since 2020.04
+
  * */
 public class ImageView2 extends ImageView {
-
     public ImageView2(Image image) {
         super(image);
         setImageDepth();

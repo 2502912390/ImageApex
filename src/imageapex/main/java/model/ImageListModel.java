@@ -8,30 +8,25 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * 1.文件筛选 2.计算图片数 3.创建图片列表 4.计算文件夹所有图片的大小
- *
- * @author Kevin
- * @since 2020/3/18
- **/
-
 @Data
-public class ImageListModel {
-    // 判断文件是否为图片 支持jpg/jpeg/png/gif/bmp
-    public static boolean isSupportedImg(String fileName) {
+public class ImageListModel {//对多张图像的操作类
+
+    public static boolean isSupportedImg(String fileName) { // 判断文件是否为图片 支持jpg/jpeg/png/gif/bmp
         return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") ||
                 fileName.endsWith(".png") || fileName.endsWith(".gif") ||
                 fileName.endsWith(".bmp");
     }
 
     // 初始化图片列表
-    public static ArrayList<ImageModel> initImgList(String path) throws IOException {
+    public static ArrayList<ImageModel> initImgList(String path) throws IOException {// 根据输入的路径 返回该路径下所有的 ImageModel
         ArrayList<ImageModel> imgList = new ArrayList<>(); // 默认根据name进行排序
         if (path.equals("") || path == null)
             return null;
+        //遍历文件树
         Files.walkFileTree(Paths.get(path), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                //获取文件名 转小写 并判断是否是所需文件 是则创建一个ImageModel对象加入imgList
                 String fileName = file.getFileName().toString().toLowerCase();
                 if (isSupportedImg(fileName)) {
                     imgList.add(new ImageModel(file.toString())); // 获取绝对路径
@@ -57,13 +52,13 @@ public class ImageListModel {
         return imgList;
     }
 
-    // 返回文件夹内图片张数
-    public static int getListImgNum(ArrayList<ImageModel> im) {
+
+    public static int getListImgNum(ArrayList<ImageModel> im) {// 返回文件夹内图片数量
         return im.size();
     }
 
-    // 返回文件夹内的 图片 大小
-    public static String getListImgSize(ArrayList<ImageModel> im) {
+
+    public static String getListImgSize(ArrayList<ImageModel> im) {// 返回文件夹内的图片总大小
         long totalSize = 0;
         for (ImageModel i : im) {
             totalSize += i.getFileLength();
@@ -72,7 +67,7 @@ public class ImageListModel {
     }
 
     // 刷新文件夹 返回新列表
-    public static ArrayList<ImageModel> refreshList(String path) {
+    public static ArrayList<ImageModel> refreshList(String path) {// 根据输入路径 刷新文件夹 返回新列表
         ArrayList<ImageModel> list;
         try {
             list = initImgList(path);
@@ -82,28 +77,28 @@ public class ImageListModel {
         return list;
     }
 
-    // 带排序的刷新 对文件夹排序 mode->排序模式
-    public static ArrayList<ImageModel> refreshList(String path, String mode) {
+
+    public static ArrayList<ImageModel> refreshList(String path, String mode) {// 带排序的刷新 对文件夹排序 mode->排序模式
         ArrayList<ImageModel> list = refreshList(path);
         switch (mode) {
-            case SortParam.SBND:
+            case SortParam.SBND://按名称降序 翻转即可
                 assert list != null;
                 Collections.reverse(list);
                 return list;
-            case SortParam.SBSR:
+            case SortParam.SBSR://按大小升序
                 assert list != null;
                 list.sort(new SortBySize());
                 return list;
-            case SortParam.SBSD:
+            case SortParam.SBSD://按大小降序
                 assert list != null;
                 list.sort(new SortBySize());
                 Collections.reverse(list);
                 return list;
-            case SortParam.SBDR:
+            case SortParam.SBDR://按修改日期升序
                 assert list != null;
                 list.sort(new SortByDate());
                 return list;
-            case SortParam.SBDD:
+            case SortParam.SBDD://按修改日期降序
                 assert list != null;
                 list.sort(new SortByDate());
                 Collections.reverse(list);

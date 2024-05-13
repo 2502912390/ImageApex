@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>The-Three</groupId>
-    <artifactId>OnlyViewer</artifactId>
+    <artifactId>ImageApex</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>

@@ -25,11 +25,6 @@ import java.io.IOException;
 
 /**
  * 主窗口的缩略图单元。
- * 用来包装图片{@link ImageView2}和图片文件名{@link ImageLabel}。
- * 继承自{@link VBox}，添加特定的样式。
- *
- * @author Grey
- * @since 2020.04
  */
 @Getter
 @Setter

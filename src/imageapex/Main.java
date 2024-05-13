@@ -12,6 +12,12 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+//重命名bug  多选重命名
+//鼠标滚轮bug
+//点缩略图选中 单击拖拽多选功能
+//取消选中状态
+//第一张或最后一张的提示信息有bug
+
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,7 +49,7 @@ public class Main extends Application{
     }
 
     public static void main(String[] args) {
-        System.out.println("上传成功");
+//        System.out.println("上传成功");
         launch(args);
     }
 }

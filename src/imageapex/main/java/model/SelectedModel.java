@@ -20,31 +20,23 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-
-/**
- * 被选中图片操作类
- * 1.初始化源 2.复制 3.剪切 4.粘贴 5.重命名 6.删除 7.压缩
- *
- * @author Kevin
- * @since 2020/3/22
- **/
-
-public class SelectedModel {
+public class SelectedModel {//被选中照片操作类
     /**
-     * 复制：如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名
-     * -> 2.若是在不同文件夹，可选择覆盖或跳过
+     * 复制：如果遇到文件重复 -> 1.若是源文件夹与目的文件夹相同则重命名  2.若是在不同文件夹，可选择覆盖或跳过
      * 剪切：如果遇到文件重复 -> 直接覆盖
      * 重命名：如果遇到文件重复 -> 直接覆盖
      */
+
     @Getter
-    private static Path sourcePath;
+    private static Path sourcePath;//暂存需要操作的单张图片的路径
+
     @Getter
-    private static ArrayList<Path> sourcePathList = new ArrayList<>();
-    private static Path targetPath;
+    private static ArrayList<Path> sourcePathList = new ArrayList<>();//保存已经选择的多张图片路径
+    private static Path targetPath;//要复制、剪切到的目标路径
 
     @Setter
     @Getter
-    private static int copyOrMove = -1; // 选择复制/剪切 0->复制 1->剪切
+    private static int copyOrMove = -1; // 选择标志位 0->复制 1->剪切
 
     @Getter
     @Setter
@@ -53,17 +45,17 @@ public class SelectedModel {
     @Getter
     @Setter
     private static int waitingPasteNum = 0;
+
     @Getter
     @Setter
-    private static int havePastedNum = 0;
-    private static int coverImage = 0;
+    private static int havePastedNum = 0;// 统计对文件的操作数量 复制+剪切
 
-    private static HomeController hc = (HomeController) ControllerUtil.controllers.get("HomeController");
+    private static int coverImage = 0;//统计覆盖了图片数量
 
-    /**
-     * 1.初始化源 复制/剪切/重命名/删除/压缩选项调用
-     */
-    public static boolean setSourcePath(@NonNull ImageModel im) {
+    private static HomeController hc = (HomeController) ControllerUtil.controllers.get("HomeController");//获取home控制类 此处主要是用于更新粘贴/剪切后显示的图像列表
+
+    //单选一张图片时 设置操作的源路径
+    public static boolean setSourcePath(@NonNull ImageModel im) { //根据输入的图片/文件 设置源路径
         sourcePath = im.getImageFile().toPath();
         singleOrMultiple = 0;
         return true;
@@ -75,18 +67,13 @@ public class SelectedModel {
         return true;
     }
 
-    /**
-     * 单选时 传入一张图片地址 同时singleOrMultiple=0
-     */
     public static boolean setSourcePath(String imagePath) {
         sourcePath = new File(imagePath).toPath();
         singleOrMultiple = 0;
         return true;
     }
 
-    /**
-     * 多选时直接传入一个列表即可 同时singleOrMultiple=1
-     */
+    //多选图片时，设置操作的原路径列表
     public static boolean setSourcePath(ArrayList<ImageModel> imList) {
         sourcePathList.clear();    // 每次点击都需要清空List, 不创建对象以节约空间与时间
         for (ImageModel im : imList) {
@@ -97,22 +84,19 @@ public class SelectedModel {
         return true;
     }
 
-    /**
-     * 2.粘贴选项 1.若是源文件夹与目的文件夹相同则重命名 2.若是在不同文件夹，可选择覆盖或跳过
-     *
-     * @param path 新的文件夹路径
-     */
-    public static boolean pasteImage(String path) {
+
+    public static boolean pasteImage(String path) {//根据单选图片/多选图片执行复制/剪切操作
         havePastedNum = 0;
         coverImage = 0;
-        if (singleOrMultiple == 0) {
+
+        if (singleOrMultiple == 0) {//单选粘贴
             try {
                 microPaste(path);
             } catch (IOException e) {
                 System.err.println("粘贴失败");
                 return false;
             }
-        } else if (singleOrMultiple == 1) {
+        } else if (singleOrMultiple == 1) {//多选粘贴
             try {
                 for (Path p : sourcePathList) {
                     sourcePath = p;
@@ -123,14 +107,16 @@ public class SelectedModel {
                 return false;
             }
         }
+
         if (coverImage != 0) {
             hc.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("覆盖了 " + coverImage + " 张图片"));
         }
-        hc.refreshImagesList(hc.getSortComboBox().getValue());
+
+        hc.refreshImagesList(hc.getSortComboBox().getValue());//更新显示的图像列表
         return true;
     }
 
-    public static boolean replaceImage() {
+    public static boolean replaceImage() {//将源路径（sourcePath）中的文件复制到目标路径（targetPath）
         try {
             Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -140,53 +126,55 @@ public class SelectedModel {
         return true;
     }
 
-    // 粘贴的微操作
-    private static void microPaste(String path) throws IOException {
-        if (copyOrMove == 0) {
-            //复制粘贴
-            if (getBeforePath().equals(path)) {
-                // 情况1
-                boolean flag = false;  // 哨兵flag
+    private static void microPaste(String path) throws IOException {// 根据copyOrMove复制、剪切操作
+        if (copyOrMove == 0) {//复制
+            if (getBeforePath().equals(path)) {//将该图片复制到当前文件夹
+                boolean flag = false;//当前文件夹是否有重复图片标志位
+
+                //获取当前文件夹下所有文件
                 String[] flist = new File(path).list();
                 String sourceFileName = sourcePath.getFileName().toString();
+
+                // 当前文件夹有这个照片 重命名
                 for (String s : flist) {
                     if (sourceFileName.equals(s) & !flag) {
                         targetPath = new File(suffixName(path, "_copy")).toPath();
                         flag = true;
                     }
                 }
+
+                //当前文件夹没有这个照片 根据当前路径构建目标路径
                 if (!flag) {
                     targetPath = new File(otherPath(path)).toPath();
                 }
+
+                //复制文件
                 Files.copy(sourcePath, targetPath);
                 havePastedNum++;
-            } else {
-                // 情况2
+            } else {//将该图片复制到别的文件夹
                 targetPath = new File(otherPath(path)).toPath();
-                if (!imageRepeat(path)) {
-                    // 没有重复的图片
+
+                if (!imageRepeat(path)) {// 没有重复的图片 直接复制
                     Files.copy(sourcePath, targetPath);
                     havePastedNum++;
-                } else {
+                } else {//提示错误
                     show();
                 }
             }
-        } else if (copyOrMove == 1) {
-            //剪切粘贴
+        } else if (copyOrMove == 1) {//剪切
             targetPath = new File(otherPath(path)).toPath();
-            if (imageRepeat(path))
+
+            if (imageRepeat(path))//有重复
                 coverImage++;
-            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);//不管目标路径是否有重复 直接覆盖
             havePastedNum++;
+
             if (havePastedNum == waitingPasteNum)
-                copyOrMove = -1;  // 剪切完了以后就置 -1->按粘贴键没反应
+                copyOrMove = -1;  // 剪切完了以后就置 -1 -> 使得按粘贴键没反应
         }
     }
 
-    /**
-     * 粘贴前需要判断是否有重复图片
-     */
-    private static boolean imageRepeat(String path) {
+    private static boolean imageRepeat(String path) {//判断是否有重复图片
         String targetImageName = targetPath.getFileName().toString();
         try {
             if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
@@ -209,27 +197,25 @@ public class SelectedModel {
                 "\n目标已包含一个名为\"" + im.getImageName() + "\"的文件\n").show();
     }
 
-    /**
-     * 3.重命名选项 重复命名直接覆盖
-     *
-     * @param newName 新的文件名
-     */
-    public static boolean renameImage(String newName) {
-        if (singleOrMultiple == 0) {
+    public static boolean renameImage(String newName) {//根据单选图片/多选图片执行重命名操作
+        if (singleOrMultiple == 0) {//单张图片
             try {
                 microRename(newName);
             } catch (IOException e) {
                 System.err.println("重命名失败");
                 return false;
             }
-        } else if (singleOrMultiple == 1) {
+        } else if (singleOrMultiple == 1) {//多张图片 bug
             Path[] imArray = new Path[sourcePathList.size()];
-            sourcePathList.toArray(imArray);
+            sourcePathList.toArray(imArray);//所选文件的所有文件名
+
             for (int i = 0; i < imArray.length; i++) {
                 sourcePath = imArray[i];
                 try {
                     String beforeName = newName.substring(0, newName.lastIndexOf("."));
                     String afterName = newName.substring(newName.lastIndexOf("."));
+
+                    //wait to debug
                     microRename(beforeName + String.format("_%04d", i + 1) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
@@ -241,7 +227,7 @@ public class SelectedModel {
         return true;
     }
 
-    private static void microRename(String newName) throws IOException {
+    private static void microRename(String newName) throws IOException {//重命名
         targetPath = new File(otherName(newName)).toPath();
         Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
     }

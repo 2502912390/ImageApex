@@ -48,6 +48,7 @@ public class CustomDialog extends JFXDialog {
     private JFXTextArea bodyTextArea;
     private JFXTextField bodyTextField;
 
+
     private ArrayList<ImageModel> sourceList;//要拼接的图像
 
     @Getter
@@ -185,9 +186,7 @@ public class CustomDialog extends JFXDialog {
         layout.setBody(bodyTextArea);
     }
 
-    /**
-     * 重命名用到
-     */
+    //重命名弹框
     private void setBodyTextField() {
         bodyTextField = new JFXTextField();
         bodyTextField.setText(targetImage.getImageName());

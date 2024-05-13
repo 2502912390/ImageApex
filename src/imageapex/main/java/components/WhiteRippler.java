@@ -7,14 +7,8 @@ import javafx.scene.paint.Color;
 
 /**
  * 继承自{@link JFXRippler}，设置特定样式
- *
- * @see com.jfoenix.controls.JFXRippler
- * @author Grey
- * @since 2020.04
  * */
-
 public class WhiteRippler extends JFXRippler {
-
     public WhiteRippler(Node control) {
         super(control);
         super.setRipplerFill(Color.WHITE);
@@ -22,5 +16,4 @@ public class WhiteRippler extends JFXRippler {
         setPrefHeight(170);
         setPrefWidth(170);
     }
-
 }
