@@ -3,7 +3,6 @@ package imageapex.main.java.controllers;
 import com.jfoenix.controls.*;
 import imageapex.main.java.components.*;
 import imageapex.main.java.model.*;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,14 +15,11 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.sound.midi.Soundbank;
-import javax.xml.transform.Source;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -319,7 +315,7 @@ public class HomeController extends AbstractController implements Initializable 
     }
 
     private void initPasteButton() {
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrCut() == -1) {
             pasteButton.setDisable(true);
         }
     }
@@ -414,7 +410,7 @@ public class HomeController extends AbstractController implements Initializable 
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("粘贴成功"));
             refreshImagesList(sortComboBox.getValue());
         }
-        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrMove() == -1) {
+        if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrCut() == -1) {
             pasteButton.setDisable(true);
         }
     }
