@@ -92,6 +92,7 @@ public class PopupMenuController implements Initializable {
                 } else {
                     SelectedModel.setSourcePath(sourceList);
                 }
+
                 new CustomDialog(hc, DialogType.RENAME, im, "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
                 break;

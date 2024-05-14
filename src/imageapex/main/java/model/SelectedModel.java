@@ -40,7 +40,7 @@ public class SelectedModel {//被选中照片操作类
 
     @Getter
     @Setter
-    private static int singleOrMultiple = -1; // 选择单选/多选 0->单选 1->多选
+    public static int singleOrMultiple = -1; // 选择单选/多选 0->单选 1->多选
 
     @Getter
     @Setter
@@ -80,7 +80,10 @@ public class SelectedModel {//被选中照片操作类
             setSourcePath(im);
             sourcePathList.add(sourcePath);
         }
-        singleOrMultiple = 1;
+
+        if(imList.size()!=1){//bug 只有当imList.size()!=1时singleOrMultiple才应该置1 否则选单张也按多张算
+            singleOrMultiple = 1;
+        }
         return true;
     }
 
@@ -197,7 +200,7 @@ public class SelectedModel {//被选中照片操作类
                 "\n目标已包含一个名为\"" + im.getImageName() + "\"的文件\n").show();
     }
 
-    public static boolean renameImage(String newName) {//根据单选图片/多选图片执行重命名操作
+    public static boolean renameImage(String newName, String... params) {//根据单选图片/多选图片执行重命名操作 使用可变参数 只有多张图片需要输入的时候才用上第二个及之后参数
         if (singleOrMultiple == 0) {//单张图片
             try {
                 microRename(newName);
@@ -209,6 +212,13 @@ public class SelectedModel {//被选中照片操作类
             Path[] imArray = new Path[sourcePathList.size()];
             sourcePathList.toArray(imArray);//所选文件的所有文件名
 
+//            System.out.println(newName);//222.png test
+//            System.out.println(params[0]);
+//            System.out.println(params[1]);
+
+            int start=Integer.parseInt(params[0]);
+            int num=Integer.parseInt(params[1]);
+
             for (int i = 0; i < imArray.length; i++) {
                 sourcePath = imArray[i];
                 try {
@@ -216,7 +226,7 @@ public class SelectedModel {//被选中照片操作类
                     String afterName = newName.substring(newName.lastIndexOf("."));
 
                     //wait to debug
-                    microRename(beforeName + String.format("_%04d", i + 1) + afterName);
+                    microRename(beforeName +  String.format("_%0" + num + "d", start + i) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
                     return false;
@@ -232,6 +242,7 @@ public class SelectedModel {//被选中照片操作类
         Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
+    /////////////////////////////////////////////////////////////////////////
     /**
      * 4.删除图片选项
      *

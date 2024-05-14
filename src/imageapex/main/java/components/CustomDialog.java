@@ -11,6 +11,8 @@ import imageapex.main.java.model.ImageModel;
 import imageapex.main.java.model.SelectedModel;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +20,10 @@ import lombok.Setter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * 自定义、可复用的对话框，减少使用对话框时的重复代码
- */
-public class CustomDialog extends JFXDialog {
+
+
+
+public class CustomDialog extends JFXDialog { //对话框类
 
     @Setter
     private ImageModel targetImage;
@@ -30,8 +32,9 @@ public class CustomDialog extends JFXDialog {
     private HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
     private DisplayWindowController dwc = (DisplayWindowController) ControllerUtil.controllers.get(DisplayWindowController.class.getSimpleName());
 
-    private DialogType type;
+    private DialogType type; //对话框类型 删除/重命名。。。
 
+    //对话框的三个按钮
     @Getter
     private JFXButton leftButton;
     @Getter
@@ -47,20 +50,16 @@ public class CustomDialog extends JFXDialog {
     @Getter
     private JFXTextArea bodyTextArea;
     private JFXTextField bodyTextField;
-
+    private JFXTextField bodyTextField1;
+    private JFXTextField bodyTextField2;
 
     private ArrayList<ImageModel> sourceList;//要拼接的图像
 
+    //创建对话框的内容组件
     @Getter
     private JFXDialogLayout layout = new JFXDialogLayout();
 
-    /**
-     * @param controller  对话框出现所在的界面的控制器
-     *                    如：需要在主界面弹出，则传入{@link HomeController}的实例
-     * @param type        对话框种类，详见{@link DialogType}
-     * @param targetImage 待处理的目标图片对象
-     */
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage) {
+    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage) {//基本构造函数
         this.controller = controller;
         this.type = type;
         this.targetImage = targetImage;
@@ -94,7 +93,13 @@ public class CustomDialog extends JFXDialog {
                 makeDeleteDialog();
                 break;
             case RENAME:
-                makeRenameDialog();
+                if(SelectedModel.singleOrMultiple==0){//单选
+                    makeRenameDialog();
+                }else if(SelectedModel.singleOrMultiple==1){//多选 待办
+//                    System.out.println("test++++++++++++");
+                    makeMulRenameDialog();
+                }
+//                System.out.println(SelectedModel.singleOrMultiple); //for debug
                 break;
             case REPLACE:
                 makeReplaceDialog();
@@ -105,53 +110,34 @@ public class CustomDialog extends JFXDialog {
         }
     }
 
-    /**
-     * @param controller  对话框出现所在的界面的控制器
-     *                    如需要在主界面弹出，则传入{@link HomeController}的实例
-     * @param type        对话框种类，详见{@link DialogType}
-     * @param targetImage 待处理的目标图片对象
-     * @param headingText 对话框标题
-     */
-    public CustomDialog(AbstractController controller,
-                        DialogType type, ImageModel targetImage,
-                        String headingText) {
+
+    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText) {//设置标题构造函数
         this(controller, type, targetImage);
         setHeadingLabel(headingText);
     }
 
-    //用于图像拼接构造函数
-    public CustomDialog(AbstractController controller,
-                        DialogType type, ImageModel targetImage,
-                        String headingText,ArrayList<ImageModel> sourceList) {
+
+    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText,ArrayList<ImageModel> sourceList) {//用于图像拼接构造函数
         this(controller, type, targetImage);
         this.sourceList=sourceList;
         setHeadingLabel(headingText);
     }
 
-    /**
-     * @param controller  对话框出现所在的界面的控制器
-     *                    如需要在主界面弹出，则传入{@link HomeController}的实例
-     * @param type        对话框种类，详见{@link DialogType}
-     * @param targetImage 待处理的目标图片对象
-     * @param headingText 对话框标题
-     * @param bodyText    正文
-     */
-    public CustomDialog(AbstractController controller,
-                        DialogType type, ImageModel targetImage,
-                        String headingText, String bodyText) {
+    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText, String bodyText) {//添加了文本框的构造函数
         this(controller, type, targetImage, headingText);
         setBodyLabel(bodyText);
     }
 
-    public void setHeadingLabel(String headingText) {
+    public void setHeadingLabel(String headingText) {//为对话框添加标题
         headingLabel = new Label(headingText);
         headingLabel.getStyleClass().add("dialog-heading");
         layout.setHeading(headingLabel);
     }
 
-    public void setBodyLabel(String bodyText) {
+    public void setBodyLabel(String bodyText) {//为对话框添加主体
         bodyLabel = new Label(bodyText);
         bodyLabel.getStyleClass().add("dialog-body");
+
         if (type == DialogType.INFO) {
             setBodyTextArea(bodyText);
         } else {
@@ -159,9 +145,7 @@ public class CustomDialog extends JFXDialog {
         }
     }
 
-    /**
-     * 向对话框主体传入其他内容
-     */
+    //向对话框传入其他内容 vbox等
     public void setBodyContent(Node... body) {
         layout.setBody(body);
     }
@@ -192,6 +176,28 @@ public class CustomDialog extends JFXDialog {
         bodyTextField.setText(targetImage.getImageName());
         bodyTextField.getStyleClass().addAll("rename-text-field", "dialog-body");
         layout.setBody(bodyTextField);
+    }
+
+    private void setMulBodyTextField(){//设置多张图片重命名的body
+        bodyTextField = new JFXTextField();
+        bodyTextField.setText(targetImage.getImageName());
+        bodyTextField.getStyleClass().addAll("rename-text-field", "dialog-body");
+        bodyTextField.setEditable(true);
+
+        bodyTextField1 = new JFXTextField();
+        bodyTextField1.setText("启始编号");
+        bodyTextField1.getStyleClass().addAll("rename-text-field", "dialog-body");
+        bodyTextField1.setEditable(true);
+
+        bodyTextField2 = new JFXTextField();
+        bodyTextField2.setText("编号位数");
+        bodyTextField2.getStyleClass().addAll("rename-text-field", "dialog-body");
+        bodyTextField2.setEditable(true);
+
+        VBox vbox=new VBox();
+        vbox.getChildren().addAll(bodyTextField, bodyTextField1,bodyTextField2);
+
+        layout.setBody(vbox);
     }
 
     /**
@@ -244,6 +250,17 @@ public class CustomDialog extends JFXDialog {
         setBodyTextField();
         rightButton.setOnAction(event -> {
             if (SelectedModel.renameImage(bodyTextField.getText()))
+                controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
+            this.close();
+            hc.refreshImagesList(hc.getSortComboBox().getValue());
+        });
+    }
+
+    //多文件重命名对话框 待办
+    private void makeMulRenameDialog() {
+        setMulBodyTextField();
+        rightButton.setOnAction(event -> {
+            if (SelectedModel.renameImage(bodyTextField.getText(),bodyTextField1.getText(),bodyTextField2.getText()))
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
             this.close();
             hc.refreshImagesList(hc.getSortComboBox().getValue());
