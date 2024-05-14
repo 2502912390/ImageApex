@@ -8,15 +8,7 @@ import imageapex.main.java.model.ImageModel;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * @ProjName: OnlyViewer
- * @ClassName: SwitchPics
- * @Author: tudou daren
- * @Describe: 用于处理上下张图片切换类
- * @since 2020.05
- */
-
-public class SwitchPics {
+public class SwitchPics {//处理上下图片切换类
 
     private ArrayList<ImageModel> ilist;
 

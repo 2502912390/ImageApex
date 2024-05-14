@@ -24,15 +24,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
-/**
- * 主窗口界面的控制器
- *
- * @see imageapex.main.java.controllers.AbstractController
- * @author Grey
- * @since 2020.03
- */
-
-public class HomeController extends AbstractController implements Initializable {
+public class HomeController extends AbstractController implements Initializable {//主窗口界面控制器
 
     //文件夹工具(信息)栏功能按钮
     @FXML

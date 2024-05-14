@@ -16,12 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-/**
- * 缩略图的右键菜单控制器
- */
-
-public class PopupMenuController implements Initializable {
-
+public class PopupMenuController implements Initializable {//缩略图右键菜单控制器
     @FXML
     private JFXListView<?> popupList;
 

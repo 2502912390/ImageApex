@@ -37,12 +37,12 @@ public class FileTreeViewController implements Initializable {//文件目录树�
         setFileTreeView();
     }
 
-    private void setFileTreeView() {
+    private void setFileTreeView() {//以根节点构建目录树
         //定义目录树
         File[] rootList = File.listRoots();//获取系统中所有的根目录 C D F。。
         TreeItem<File> mainTreeItem = new TreeItem<>(rootList[0]);
 
-        for (File root : rootList) {
+        for (File root : rootList) {//遍历每个根节点 为每个根节点添加其子节点
             TreeItem<File> rootItem = new TreeItem<>(root);//以根目录为树
             try {
                 addItems(rootItem, 0);
@@ -55,28 +55,27 @@ public class FileTreeViewController implements Initializable {//文件目录树�
         fileTreeView.setRoot(mainTreeItem);
         fileTreeView.setShowRoot(false);
 
-        //自定义单元格，设置文件夹图片
-        fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
+        //根据文件是否展开来显示不同的文件夹图标
+        fileTreeView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {//设置单元格工厂
             @Override
             public TreeCell<File> call(TreeView<File> param) {
                 TreeCell<File> treeCell = new TreeCell<File>() {
                     @Override
                     protected void updateItem(File item, boolean empty) {
-
                         if (!empty) {
                             super.updateItem(item, empty);
-                            HBox hBox = new HBox();
-                            //对根目录进行单独判断定义文字
-                            Label label = new Label(isListRoots(item));
+                            HBox hBox = new HBox();//用于存放图标和标签
+
+                            Label label = new Label(isListRoots(item));//获取目录对应的文本 根目录需要特殊判断
                             this.setGraphic(hBox);
 
-                            if (this.getTreeItem().isExpanded()) {
+                            if (this.getTreeItem().isExpanded()) {//设置展开图标
                                 ImageView folderImage = new ImageView("imageapex/main/resources/icons/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片
                                 this.setGraphic(hBox);
-                            } else if (!this.getTreeItem().isExpanded()) {
+                            } else if (!this.getTreeItem().isExpanded()) {//设置默认图标
                                 ImageView folderImage = new ImageView("imageapex/main/resources/icons/folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
@@ -86,7 +85,6 @@ public class FileTreeViewController implements Initializable {//文件目录树�
                             hBox.getChildren().add(label);//加文字
                         } else if (empty) {
                             this.setGraphic(null);
-
                         }
                     }
                 };
@@ -95,7 +93,7 @@ public class FileTreeViewController implements Initializable {//文件目录树�
         });
 
         //获取点击操作并刷新当前结点
-        fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {
+        fileTreeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<File>>() {//添加了一个监听器
             @Override
             public void changed(ObservableValue<? extends TreeItem<File>> observable, TreeItem<File> oldValue, TreeItem<File> newValue) {
                 //此处点击可获得文件夹绝对路径
@@ -114,7 +112,7 @@ public class FileTreeViewController implements Initializable {//文件目录树�
         });
     }
 
-
+    //待优化 寻找更合适的算法
     public void addItems(TreeItem<File> in, int flag) throws IOException {//向树视图中的指定节点(in)添加子节点 添加flag用于控制递归调用的深度 太大的话会加载很慢
         File[] filelist = in.getValue().listFiles();//当前节点所代表的目录中的所有文件和子目录
         //flag判断当前遍历的层数
@@ -136,8 +134,6 @@ public class FileTreeViewController implements Initializable {//文件目录树�
             }
         }
     }
-
-
 
     public String isListRoots(File item) {//判断文件是否为根目录
         File[] rootlist = File.listRoots();
