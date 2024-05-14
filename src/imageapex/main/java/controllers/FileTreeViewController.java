@@ -19,18 +19,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * 左侧文件目录树展示
- * @ProjName: OnlyViewer
- * @ClassName: FileTreeViewController
- * @Author: tudou daren
- * @Describe: 左侧目录树Controller
- * @since 2020.05
- */
-public class FileTreeViewController implements Initializable {
+public class FileTreeViewController implements Initializable {//文件目录树类别
 
     @FXML
-    private JFXTreeView<File> fileTreeView;
+    private JFXTreeView<File> fileTreeView;//显示树形数据结构
 
     private HomeController hc;
 
@@ -47,11 +39,11 @@ public class FileTreeViewController implements Initializable {
 
     private void setFileTreeView() {
         //定义目录树
-        File[] rootList = File.listRoots();
+        File[] rootList = File.listRoots();//获取系统中所有的根目录 C D F。。
         TreeItem<File> mainTreeItem = new TreeItem<>(rootList[0]);
 
         for (File root : rootList) {
-            TreeItem<File> rootItem = new TreeItem<>(root);
+            TreeItem<File> rootItem = new TreeItem<>(root);//以根目录为树
             try {
                 addItems(rootItem, 0);
             } catch (IOException e) {
@@ -122,35 +114,32 @@ public class FileTreeViewController implements Initializable {
         });
     }
 
-    /**
-     * 递归将节点加入目录树中
-     */
-    public void addItems(TreeItem<File> in, int flag) throws IOException {
-        File[] filelist = in.getValue().listFiles();
+
+    public void addItems(TreeItem<File> in, int flag) throws IOException {//向树视图中的指定节点(in)添加子节点 添加flag用于控制递归调用的深度 太大的话会加载很慢
+        File[] filelist = in.getValue().listFiles();//当前节点所代表的目录中的所有文件和子目录
         //flag判断当前遍历的层数
         if (filelist != null) {
-            if (flag == 0) {
+            if (flag == 0) {//第一层级的遍历，会先移除当前节点的所有子节点
                 in.getChildren().remove(0, in.getChildren().size());
             }
             if (filelist.length > 0) {
                 for(File f:filelist){
-                    if(f.isDirectory()&!f.isHidden()){
-                        TreeItem<File> newItem = new TreeItem<File>(f);
-                        if (flag < 1) {
+                    if(f.isDirectory()&!f.isHidden()){//是一个目录且不是隐藏文件
+                        TreeItem<File> newItem = new TreeItem<File>(f);//为该目录创建节点
+                        if (flag < 2) {//设置为2还能接受
                             addItems(newItem, flag + 1);
                         }
-                        in.getChildren().add(newItem);
-                    }
+//                        addItems(newItem, flag + 1); //fortest
+                        in.getChildren().add(newItem);//将新创建的节点添加为当前节点的子节点
                     }
                 }
             }
         }
+    }
 
 
-    /**
-     * 判断是否为根目录
-     */
-    public String isListRoots(File item) {
+
+    public String isListRoots(File item) {//判断文件是否为根目录
         File[] rootlist = File.listRoots();
         for (File isListRoots : rootlist) {
             if (item.toString().equals(isListRoots.toString())) {
@@ -159,6 +148,4 @@ public class FileTreeViewController implements Initializable {
         }
         return item.getName();
     }
-
-
 }

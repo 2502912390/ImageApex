@@ -11,5 +11,4 @@ public class AbstractController {
 
     @Getter
     private JFXSnackbar snackbar;
-
 }

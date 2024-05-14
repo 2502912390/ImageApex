@@ -202,7 +202,7 @@ public class SelectedModel {//被选中照片操作类
     public static boolean renameImage(String newName, String... params) {//根据单选图片/多选图片执行重命名操作 使用可变参数 只有多张图片需要输入的时候才用上第二个及之后参数
         if (singleOrMultiple == 0) {//单张图片
             try {
-                microRename(newName);
+                microRename(newName);//重命名操作
             } catch (IOException e) {
                 System.err.println("重命名失败");
                 return false;
@@ -211,20 +211,20 @@ public class SelectedModel {//被选中照片操作类
             Path[] imArray = new Path[sourcePathList.size()];
             sourcePathList.toArray(imArray);//所选文件的所有文件名
 
-//            System.out.println(newName);//222.png test
+//            System.out.println(newName);//222.png for_test debug
 //            System.out.println(params[0]);
 //            System.out.println(params[1]);
 
-            int start=Integer.parseInt(params[0]);
-            int num=Integer.parseInt(params[1]);
+            int start=Integer.parseInt(params[0]);//起始下标
+            int num=Integer.parseInt(params[1]);//填充位数
 
-            for (int i = 0; i < imArray.length; i++) {
+            for (int i = 0; i < imArray.length; i++) {//遍历文件
                 sourcePath = imArray[i];
                 try {
+                    //按要求 逐个对图片的文件名重命名
                     String beforeName = newName.substring(0, newName.lastIndexOf("."));
                     String afterName = newName.substring(newName.lastIndexOf("."));
 
-                    //wait to debug
                     microRename(beforeName +  String.format("_%0" + num + "d", start + i) + afterName);
                 } catch (IOException e) {
                     System.err.println("重命名失败");
@@ -241,25 +241,19 @@ public class SelectedModel {//被选中照片操作类
         Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    /**
-     * 4.删除图片选项
-     *
-     * @return 返回删除成功的图片个数
-     */
-    public static int deleteImage() {
+    public static int deleteImage() {//根据单选图片/多选图片执行删除操作
         int success = 0;
         // 删除图片文件进入回收站，不直接删除
         if (singleOrMultiple == 0) {
             try {
-                microDelete();
+                microDelete();//删除
                 success++;
             } catch (IOException e) {
                 System.err.println("删除失败");
                 return 0;
             }
         } else if (singleOrMultiple == 1) {
-            for (Path p : sourcePathList) {
+            for (Path p : sourcePathList) {//遍历删除
                 sourcePath = p;
                 try {
                     microDelete();
@@ -274,8 +268,7 @@ public class SelectedModel {//被选中照片操作类
         return success;
     }
 
-    // 删除的微操作
-    private static void microDelete() throws IOException {
+    private static void microDelete() throws IOException { // 删除
         FileUtils fileUtils = FileUtils.getInstance();
         if (fileUtils.hasTrash()) {
             fileUtils.moveToTrash(new File[]{(sourcePath.toFile())});
@@ -283,13 +276,7 @@ public class SelectedModel {//被选中照片操作类
     }
 
 
-    /**
-     * 5.压缩图片选项
-     *
-     * @param desSize 目标大小
-     */
-    // 压缩图片 desSize 目标字节数 最终压缩结果向1MB靠近
-    public static int compressImage(int desSize) {
+    public static int compressImage(int desSize) {////根据单选图片/多选图片执行压缩操作
         if (singleOrMultiple == 0) {
             try {
                 if (!microCompress(desSize))
@@ -317,31 +304,30 @@ public class SelectedModel {//被选中照片操作类
         return 0;
     }
 
-    // 压缩图片微操作
-    private static boolean microCompress(int desSize) throws IOException {
-        byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());
-        if (imageBytes == null || imageBytes.length < desSize * 1024) {
+
+    private static boolean microCompress(int desSize) throws IOException {// 压缩图片
+        byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());//将文件转字节数组
+        if (imageBytes == null || imageBytes.length < desSize * 1024) {//判断
             // 不需要压缩了
             return false;
         }
         double accuracy = 0;
         if (imageBytes.length > desSize * 1024) {
-            accuracy = getAccuracy(imageBytes.length / 1024.0);
-            ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+            accuracy = getAccuracy(imageBytes.length / 1024.0);//指定压缩精度
+//            ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
             ByteArrayOutputStream bos = new ByteArrayOutputStream(imageBytes.length);
             Thumbnails.of(sourcePath.toFile())
                     .scale(accuracy)  // 分辨率
                     .outputQuality(accuracy)  // 图片质量
                     .toOutputStream(bos);
-//                        .toFile(newFile);  // 速度略慢
-            imageBytes = bos.toByteArray();
+            imageBytes = bos.toByteArray(); //
         }
-        String newImagePath = suffixName(getBeforePath(), "_only");
+        String newImagePath = suffixName(getBeforePath(), "_compress");
         File newFile = new File(newImagePath);
-        return GenUtilModel.getFileByByte(imageBytes, newFile);
+        return GenUtilModel.getFileByByte(imageBytes, newFile);//返回file文件类型
     }
 
-    private static double getAccuracy(double imageSize) {
+    private static double getAccuracy(double imageSize) {//根据图片大小 自适应控制压缩精度
         double accuracy = 0;
         if (imageSize < 1024 * 2) {
             accuracy = 0.71;
@@ -355,11 +341,8 @@ public class SelectedModel {//被选中照片操作类
         return accuracy;
     }
 
-    /**
-     * 文件名处理私有方法
-     */
-    // 检查路径后缀
-    private static String checkPath(String path) {
+
+    private static String checkPath(String path) {//检查路径后缀 给输入路径结尾添加\\ 用于将当前路径和照片类型拼接
         StringBuilder sb = new StringBuilder(32);
         if (!path.endsWith("\\")) {
             sb.append(path).append("\\");
@@ -369,29 +352,26 @@ public class SelectedModel {//被选中照片操作类
         return sb.toString();
     }
 
-    // 获得图片绝对路径的前部分
-    private static String getBeforePath() {
+    private static String getBeforePath() {// // 获得图片所在文件夹
         String path = sourcePath.toString();
         return path.substring(0, path.lastIndexOf("\\"));
     }
 
-    // 修改路径 复制/剪切
-    private static String otherPath(String newPath) {
+
+    private static String otherPath(String newPath) {// 将输入路径与当前图片名字进行拼接得新路径
         StringBuilder sb = new StringBuilder(32);
         sb.append(checkPath(newPath)).append(sourcePath.getFileName().toString()); // 获得文件名
         return sb.toString();
     }
 
-    // 修改名字 重命名
-    private static String otherName(String newName) {
+    private static String otherName(String newName) {// 修改名字 重命名
         StringBuilder sb = new StringBuilder(32);
         String path = sourcePath.toString().substring(0, sourcePath.toString().lastIndexOf("\\"));
         sb.append(path).append("\\").append(newName);
         return sb.toString();
     }
 
-    // 分割.jpg后缀 处理名字前半部分冲突
-    private static String suffixName(String newPath, String suffix) {
+    private static String suffixName(String newPath, String suffix) {// 分割.jpg后缀 处理名字前半部分冲突
         StringBuilder sb = new StringBuilder(32);
         String sourceName = sourcePath.getFileName().toString();
         String nameBefore = sourceName.substring(0, sourceName.indexOf(".")); // 只有一个名字 没有.

@@ -8,21 +8,14 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-/**
- * 存放已选图片的工具类。
- * 包含一个列表{@link ArrayList}，和一些对已选图片的显示状态的更改
- *
- * @author Grey
- * @since 2020.05
- */
-public class SelectionModel {
+public class SelectionModel {//已选图片的工具类
 
-    private static ArrayList<ImageBox> selection = new ArrayList<>(); //用于暂存选中的缩略图单元，方便设置选中时的样式
+    private static ArrayList<ImageBox> selection = new ArrayList<>(); //用于暂存选中的缩略图单元ImageBox，方便设置选中时的样式
     @Getter
     public static ArrayList<ImageModel> imageModelList = new ArrayList<>(); //存放选中的图片本身，作为后续复制粘贴等批量操作的源
     private static HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
 
-    public static void add(ImageBox node) {
+    public static void add(ImageBox node) {//设置选中的效果
 //        if (!contains(node)){
             JFXDepthManager.setDepth(node, 4);
             node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() - 5);
@@ -33,7 +26,7 @@ public class SelectionModel {
         log();
     }
 
-    public static void remove(ImageBox node) {
+    public static void remove(ImageBox node) {//设置取消选中的效果
         JFXDepthManager.setDepth(node, 0);
         node.getImageView2().setTranslateY(node.getImageView2().getTranslateY() + 5);
         selection.remove(node);
@@ -42,7 +35,7 @@ public class SelectionModel {
         log();
     }
 
-    public static void clear() {
+    public static void clear() {//清空选中
         while (!selection.isEmpty()) {
 //            remove(selection.iterator().next());
             selection.iterator().next().getCheckBox().setSelected(false);
@@ -57,6 +50,7 @@ public class SelectionModel {
         return false;
     }
 
+    //控制台输出
     private static void log() {
         System.out.println("Items in list: " + selection);
     }

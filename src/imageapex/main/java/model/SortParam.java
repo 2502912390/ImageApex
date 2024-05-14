@@ -1,9 +1,5 @@
 package imageapex.main.java.model;
 
-/**
- * @author Kevin
- * @since 2020/4/30
- **/
 
 public final class SortParam {
     // SBNR -> Sort By Name Rise
@@ -13,5 +9,4 @@ public final class SortParam {
     public static final String SBSD = "按大小降序";
     public static final String SBDR = "按修改日期升序";
     public static final String SBDD = "按修改日期降序";
-
 }
