@@ -173,24 +173,24 @@ public class CustomDialog extends JFXDialog { //对话框类
     //重命名弹框
     private void setBodyTextField() {
         bodyTextField = new JFXTextField();
-        bodyTextField.setText(targetImage.getImageName());
+        bodyTextField.setText(targetImage.getImageNameNoExt());//不修改
         bodyTextField.getStyleClass().addAll("rename-text-field", "dialog-body");
         layout.setBody(bodyTextField);
     }
 
     private void setMulBodyTextField(){//设置多张图片重命名的body
         bodyTextField = new JFXTextField();
-        bodyTextField.setText(targetImage.getImageName());
+        bodyTextField.setText(targetImage.getImageNameNoExt());//只设置不带扩展名的
         bodyTextField.getStyleClass().addAll("rename-text-field", "dialog-body");
         bodyTextField.setEditable(true);
 
         bodyTextField1 = new JFXTextField();
-        bodyTextField1.setText("启始编号");
+//        bodyTextField1.setText("启始编号");
         bodyTextField1.getStyleClass().addAll("rename-text-field", "dialog-body");
         bodyTextField1.setEditable(true);
 
         bodyTextField2 = new JFXTextField();
-        bodyTextField2.setText("编号位数");
+//        bodyTextField2.setText("编号位数");
         bodyTextField2.getStyleClass().addAll("rename-text-field", "dialog-body");
         bodyTextField2.setEditable(true);
 
@@ -249,7 +249,7 @@ public class CustomDialog extends JFXDialog { //对话框类
     private void makeRenameDialog() {
         setBodyTextField();
         rightButton.setOnAction(event -> {
-            if (SelectedModel.renameImage(bodyTextField.getText()))
+            if (SelectedModel.renameImage(bodyTextField.getText()+"."+targetImage.getImageType()))
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
             this.close();
             hc.refreshImagesList(hc.getSortComboBox().getValue());
@@ -260,7 +260,7 @@ public class CustomDialog extends JFXDialog { //对话框类
     private void makeMulRenameDialog() {
         setMulBodyTextField();
         rightButton.setOnAction(event -> {
-            if (SelectedModel.renameImage(bodyTextField.getText(),bodyTextField1.getText(),bodyTextField2.getText()))
+            if (SelectedModel.renameImage(bodyTextField.getText()+"."+targetImage.getImageType(),bodyTextField1.getText(),bodyTextField2.getText()))
                 controller.getSnackbar().enqueue(new JFXSnackbar.SnackbarEvent("重命名成功"));
             this.close();
             hc.refreshImagesList(hc.getSortComboBox().getValue());
