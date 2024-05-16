@@ -91,6 +91,8 @@ public class HomeController extends AbstractController implements Initializable 
     @Getter
     private Stack<String> pathStack2 = new Stack<>();
 
+    private  int firstLoad;
+
     private ArrayList<ImageModel> curImgList = new ArrayList<>();//当前图片列表
 
     private double zoomFactor = 1.0;// 缩略图缩放因子为1.0
@@ -130,48 +132,7 @@ public class HomeController extends AbstractController implements Initializable 
     // 缩略图面板层级（从底到顶）:
     // AnchorPane > ScrollPane > FlowPane(imageListPane)
 
-    public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {//将图片列表放置到显示图片的面板
-        //检查列表是否空，可能处于初始页面
-        if (imageModelList == null)
-            return;
-
-        // 每次生成前重置
-        imageListPane.getChildren().clear();
-        scrollPane.setContent(imageListPane);
-        SelectionModel.clear();
-        unSelectAll();
-        sortComboBox.setVisible(true); //默认排序盒子不出现，除非触发了构建缩略图操作
-
-        //设置初始加载缩略图的数目
-        int firstLoad = Math.min(imageModelList.size(), 80);
-
-        //更新当前地址
-        pathTextField.setText(folderPath);
-        currentPath = folderPath;
-
-        //文件夹信息栏设置
-        if (imageModelList.isEmpty()) {
-            folderInfoLabel.setText("此文件夹下无可识别图片");
-            return;
-        } else {
-            //统计图片总数和总占用空间大小
-            int total = ImageListModel.getListImgNum(imageModelList);
-            String size = ImageListModel.getListImgSize(imageModelList);
-            folderInfoLabel.setText(String.format("%d 张图片，共 %s ", total, size));
-            selectedNumLabel.setText("| 已选中 0 张");
-        }
-
-        //+++ 多线程
-        //初始加载 firstload 张缩略图
-        int i;
-        for (i = 0; i < firstLoad; i++) {
-//            System.out.println(i); //for test
-            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
-            imageBox.getImageView2().setFitHeight(imageBox.getImageView2().getImage().getHeight() * zoomFactor);
-            imageBox.getImageView2().setFitWidth(imageBox.getImageView2().getImage().getWidth() * zoomFactor);
-            imageListPane.getChildren().add(imageBox);
-        }
-
+    private void initMouseAction() {
         imageListPane.setOnScroll(event -> {
             if (event.isControlDown()) {//按下ctrl+鼠标滚动  实现缩放缩略图
 //                System.out.println("ctrl***************"); //for_test
@@ -200,8 +161,8 @@ public class HomeController extends AbstractController implements Initializable 
                 int times = 30; // 每次滚动加载30张
                 while (times > 0) {
                     index++;
-                    if (event.getDeltaY() <= 0 && index < imageModelList.size()) {
-                        ImageBox imageBox = new ImageBox(imageModelList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
+                    if (event.getDeltaY() <= 0 && index < curImgList.size()) {
+                        ImageBox imageBox = new ImageBox(curImgList.get(index)); //装图片和文件名的盒子，一上一下放置图片和文件名
                         imageListPane.getChildren().add(imageBox);
                     } else {
                         break;
@@ -255,6 +216,49 @@ public class HomeController extends AbstractController implements Initializable 
             // 重置拖拽起始点
             dragStartPoint = null;
         });
+    }
+
+    public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {//将图片列表放置到显示图片的面板
+        //检查列表是否空，可能处于初始页面
+        if (imageModelList == null)
+            return;
+
+        // 每次生成前重置
+        imageListPane.getChildren().clear();
+        scrollPane.setContent(imageListPane);
+        SelectionModel.clear();
+        unSelectAll();
+        sortComboBox.setVisible(true); //默认排序盒子不出现，除非触发了构建缩略图操作
+
+        //设置初始加载缩略图的数目
+        firstLoad = Math.min(imageModelList.size(), 80);
+
+        //更新当前地址
+        pathTextField.setText(folderPath);
+        currentPath = folderPath;
+
+        //文件夹信息栏设置
+        if (imageModelList.isEmpty()) {
+            folderInfoLabel.setText("此文件夹下无可识别图片");
+            return;
+        } else {
+            //统计图片总数和总占用空间大小
+            int total = ImageListModel.getListImgNum(imageModelList);
+            String size = ImageListModel.getListImgSize(imageModelList);
+            folderInfoLabel.setText(String.format("%d 张图片，共 %s ", total, size));
+            selectedNumLabel.setText("| 已选中 0 张");
+        }
+
+        //+++ 多线程
+        //初始加载 firstload 张缩略图
+        int i;
+        for (i = 0; i < firstLoad; i++) {
+//            System.out.println(i); //for test
+            ImageBox imageBox = new ImageBox(imageModelList.get(i)); //装图片和文件名的盒子，一上一下放置图片和文件名
+            imageBox.getImageView2().setFitHeight(imageBox.getImageView2().getImage().getHeight() * zoomFactor);
+            imageBox.getImageView2().setFitWidth(imageBox.getImageView2().getImage().getWidth() * zoomFactor);
+            imageListPane.getChildren().add(imageBox);
+        }
     }
 
 
