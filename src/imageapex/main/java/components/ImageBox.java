@@ -34,7 +34,7 @@ public class ImageBox extends VBox {
     private ImageView2 imageView2;
     private JFXPopup popUpMenu;
     @Getter
-    private JFXCheckBox checkBox = new JFXCheckBox();
+    private JFXCheckBox checkBox = new JFXCheckBox();//复选框
 
     /**
      * 构造器，初始化一个缩略图单元
