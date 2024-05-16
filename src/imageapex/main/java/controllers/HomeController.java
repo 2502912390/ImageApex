@@ -21,6 +21,8 @@ import javafx.scene.text.TextAlignment;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -204,12 +206,17 @@ public class HomeController extends AbstractController implements Initializable 
                 for (Node node : imageListPane.getChildren()) {
                     if (node instanceof ImageBox) {
                         ImageBox imageBox = (ImageBox) node;
-                        //设置为选中状态
-//                        imageBox.setSelect();
+                        if (selectionBox.getBoundsInParent().intersects(imageBox.getBoundsInParent())) {
+                            imageBox.setIsSelect();
+                        } else {
+                            imageBox.setNoSelect();
+                        }
                     }
                 }
             }
         });
+
+
 
         imageListPane.setOnMouseReleased(event -> {
             // 清除框选范围的矩形框
@@ -217,6 +224,11 @@ public class HomeController extends AbstractController implements Initializable 
             // 重置拖拽起始点
             dragStartPoint = null;
         });
+
+//        anchorPane.setOnMouseClicked(event -> {
+//            //清除选择
+//            System.out.println("+++++++++++++++++++++++++++");
+//        });
     }
 
     public void placeImages(ArrayList<ImageModel> imageModelList, String folderPath) {//将图片列表放置到显示图片的面板

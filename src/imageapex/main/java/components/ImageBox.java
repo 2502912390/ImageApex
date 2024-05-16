@@ -81,8 +81,12 @@ public class ImageBox extends VBox {//缩略图单元
     }
 
     //设置为选中状态
-    public void setSelect(){
+    public void setIsSelect(){
         this.checkBox.setSelected(true);
+    }
+
+    public void setNoSelect(){
+        this.checkBox.setSelected(false);
     }
 
     /**
