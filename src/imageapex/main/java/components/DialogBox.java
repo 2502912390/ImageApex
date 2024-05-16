@@ -2,7 +2,7 @@ package imageapex.main.java.components;
 
 
 import com.jfoenix.controls.*;
-import imageapex.concat.SplicePreviewWindow;
+import imageapex.contact.SplicePreviewWindow;
 import imageapex.show.java.controllers.DisplayWindowController;
 import imageapex.main.java.controllers.AbstractController;
 import imageapex.main.java.controllers.ControllerUtil;
@@ -11,7 +11,6 @@ import imageapex.main.java.model.ImageModel;
 import imageapex.main.java.model.SelectedModel;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 
 
 
-public class CustomDialog extends JFXDialog { //对话框类
+public class DialogBox extends JFXDialog { //对话框类
 
     @Setter
     private ImageModel targetImage;
@@ -59,7 +58,7 @@ public class CustomDialog extends JFXDialog { //对话框类
     @Getter
     private JFXDialogLayout layout = new JFXDialogLayout();
 
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage) {//基本构造函数
+    public DialogBox(AbstractController controller, DialogType type, ImageModel targetImage) {//基本构造函数
         this.controller = controller;
         this.type = type;
         this.targetImage = targetImage;
@@ -111,19 +110,19 @@ public class CustomDialog extends JFXDialog { //对话框类
     }
 
 
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText) {//设置标题构造函数
+    public DialogBox(AbstractController controller, DialogType type, ImageModel targetImage, String headingText) {//设置标题构造函数
         this(controller, type, targetImage);
         setHeadingLabel(headingText);
     }
 
 
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText,ArrayList<ImageModel> sourceList) {//用于图像拼接构造函数
+    public DialogBox(AbstractController controller, DialogType type, ImageModel targetImage, String headingText, ArrayList<ImageModel> sourceList) {//用于图像拼接构造函数
         this(controller, type, targetImage);
         this.sourceList=sourceList;
         setHeadingLabel(headingText);
     }
 
-    public CustomDialog(AbstractController controller, DialogType type, ImageModel targetImage, String headingText, String bodyText) {//添加了文本框的构造函数
+    public DialogBox(AbstractController controller, DialogType type, ImageModel targetImage, String headingText, String bodyText) {//添加了文本框的构造函数
         this(controller, type, targetImage, headingText);
         setBodyLabel(bodyText);
     }

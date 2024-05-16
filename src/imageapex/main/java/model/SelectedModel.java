@@ -2,7 +2,7 @@ package imageapex.main.java.model;
 
 import com.jfoenix.controls.JFXSnackbar;
 import com.sun.jna.platform.FileUtils;
-import imageapex.main.java.components.CustomDialog;
+import imageapex.main.java.components.DialogBox;
 import imageapex.main.java.components.DialogType;
 import imageapex.main.java.controllers.ControllerUtil;
 import imageapex.main.java.controllers.HomeController;
@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
@@ -194,7 +193,7 @@ public class SelectedModel {//被选中照片操作类
 
     private synchronized static void show() {
         ImageModel im = new ImageModel(targetPath.toFile());
-        new CustomDialog(hc, DialogType.REPLACE, im,
+        new DialogBox(hc, DialogType.REPLACE, im,
                 "替换或跳过文件",
                 "\n目标已包含一个名为\"" + im.getImageName() + "\"的文件\n").show();
     }

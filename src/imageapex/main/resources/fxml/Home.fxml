@@ -22,7 +22,7 @@
                                    styleClass="toolbar-button" style="-fx-padding:10px;">
                             <graphic>
                                 <ImageView>
-                                    <Image url="@../icons/app.png"/>
+                                    <Image url="@../iconsOfMain/app.png"/>
                                 </ImageView>
                             </graphic>
                         </JFXButton>
@@ -32,7 +32,7 @@
                                    styleClass="toolbar-button" style="-fx-padding:11px;">
                             <graphic>
                                 <ImageView fitWidth="25" preserveRatio="true">
-                                    <Image url="@../icons/help.png"/>
+                                    <Image url="@../iconsOfMain/help.png"/>
                                 </ImageView>
                             </graphic>
                         </JFXButton>
@@ -41,7 +41,7 @@
                         <JFXButton fx:id="backButton" onAction="#moveBack" ripplerFill="blueviolet" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
-                                    <Image url="@../icons/back_96px.png"/>
+                                    <Image url="@../iconsOfMain/back_96px.png"/>
                                 </ImageView>
                             </graphic>
                         </JFXButton>
@@ -50,7 +50,7 @@
                         <JFXButton fx:id="forwardButton" onAction="#moveForward" ripplerFill="blueviolet" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
-                                    <Image url="@../icons/forward_96px.png"/>
+                                    <Image url="@../iconsOfMain/forward_96px.png"/>
                                 </ImageView>
                             </graphic>
                         </JFXButton>
@@ -59,7 +59,7 @@
                         <JFXButton fx:id="parentDirButton" onAction="#toParentDir" ripplerFill="blueviolet" styleClass="toolbar-button">
                             <graphic>
                                 <ImageView>
-                                    <Image url="@../icons/level_up_96px.png"/>
+                                    <Image url="@../iconsOfMain/level_up_96px.png"/>
                                 </ImageView>
                             </graphic>
                         </JFXButton>

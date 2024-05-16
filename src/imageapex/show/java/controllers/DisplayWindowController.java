@@ -3,14 +3,11 @@ package imageapex.show.java.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.*;
-import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import imageapex.show.DisplayWindow;
-import imageapex.main.java.components.CustomDialog;
+import imageapex.main.java.components.DialogBox;
 import imageapex.main.java.components.DialogType;
 import imageapex.main.java.controllers.AbstractController;
 import imageapex.main.java.controllers.ControllerUtil;
@@ -44,7 +41,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 
@@ -358,7 +354,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         info.append("大小：").append(imageModel.getFormatSize()).append("\n");
         info.append("日期：").append(imageModel.getFormatTime()).append("\n");
         info.append("\n位置：").append(imageModel.getImageFilePath());
-        new CustomDialog(this, DialogType.INFO, imageModel,
+        new DialogBox(this, DialogType.INFO, imageModel,
                 imageModel.getImageName(), info.toString()).show();
     }
 
@@ -372,7 +368,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             return;
         }
         SelectedModel.setSourcePath(imageModel);
-        new CustomDialog(this, DialogType.DELETE, imageModel,
+        new DialogBox(this, DialogType.DELETE, imageModel,
                 "删除图片",
                 "删除文件: " + imageModel.getImageName() + "\n\n你可以在回收站处找回。").show();
     }

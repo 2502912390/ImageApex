@@ -36,7 +36,7 @@ public class Main extends Application{
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("/imageapex/main/resources/css/main.css").toExternalForm());
 
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/imageapex/main/resources/icons/app.png")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/imageapex/main/resources/iconsOfMain/app.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
         System.out.println("Starting ...");

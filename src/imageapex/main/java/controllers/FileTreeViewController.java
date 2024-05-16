@@ -70,13 +70,13 @@ public class FileTreeViewController implements Initializable {//文件目录树�
                             this.setGraphic(hBox);
 
                             if (this.getTreeItem().isExpanded()) {//设置展开图标
-                                ImageView folderImage = new ImageView("imageapex/main/resources/icons/opened_folder.png");
+                                ImageView folderImage = new ImageView("imageapex/main/resources/iconsOfMain/opened_folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片
                                 this.setGraphic(hBox);
                             } else if (!this.getTreeItem().isExpanded()) {//设置默认图标
-                                ImageView folderImage = new ImageView("imageapex/main/resources/icons/folder.png");
+                                ImageView folderImage = new ImageView("imageapex/main/resources/iconsOfMain/folder.png");
                                 folderImage.setPreserveRatio(true);
                                 folderImage.setFitWidth(22);
                                 hBox.getChildren().add(folderImage);//加图片

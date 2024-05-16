@@ -70,7 +70,7 @@ public class DisplayWindow extends Application {
 
         //窗口属性设置
         stage.setTitle(im.getImageName());
-        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/imageapex/main/resources/icons/app.png")));
+        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/imageapex/main/resources/iconsOfMain/app.png")));
         stage.setScene(scene);
 
         dwController = fxmlLoader.getController();  //通过FXMLLoader获取展示窗口的controller实例

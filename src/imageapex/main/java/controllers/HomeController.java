@@ -21,8 +21,6 @@ import javafx.scene.text.TextAlignment;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -489,7 +487,7 @@ public class HomeController extends AbstractController implements Initializable 
     private void showAboutDetail() {
         VBox vBox = new VBox();
 
-        ImageView icon = new ImageView(new Image("imageapex/main/resources/icons/app_icon_300px.png"));
+        ImageView icon = new ImageView(new Image("imageapex/main/resources/iconsOfMain/app_icon_300px.png"));
         icon.setFitHeight(100);
         icon.setPreserveRatio(true);
 
@@ -508,7 +506,7 @@ public class HomeController extends AbstractController implements Initializable 
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(icon, author, bodyTextArea);
 
-        CustomDialog dialog = new CustomDialog(this, DialogType.INFO, null, "关于 ImageApex");
+        DialogBox dialog = new DialogBox(this, DialogType.INFO, null, "关于 ImageApex");
         dialog.setBodyContent(vBox);
         dialog.show();
     }

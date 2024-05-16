@@ -2,7 +2,7 @@ package imageapex.main.java.controllers;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXListView;
-import imageapex.main.java.components.CustomDialog;
+import imageapex.main.java.components.DialogBox;
 import imageapex.main.java.components.DialogType;
 import imageapex.main.java.components.ImageBox;
 import imageapex.main.java.model.*;
@@ -86,7 +86,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                     SelectedModel.setSourcePath(sourceList);
                 }
 
-                new CustomDialog(hc, DialogType.RENAME, im, "重命名图片").show();
+                new DialogBox(hc, DialogType.RENAME, im, "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
                 break;
             case 3:
@@ -108,7 +108,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张或以上图片进行拼接"));
                 } else {
-                    new CustomDialog(hc, DialogType.CHOICE, im, "选择拼接方式",sourceList).show();
+                    new DialogBox(hc, DialogType.CHOICE, im, "选择拼接方式",sourceList).show();
 //                    System.out.println("******");//for_test
                 }
 
@@ -117,12 +117,12 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
             case 5:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
-                    new CustomDialog(hc, DialogType.DELETE, im,
+                    new DialogBox(hc, DialogType.DELETE, im,
                             "确认删除",
                             "要删除文件：" + im.getImageName() + " 吗？\n\n你可以在回收站处找回。").show();
                 } else {
                     SelectedModel.setSourcePath(sourceList);
-                    new CustomDialog(hc, DialogType.DELETE, im,
+                    new DialogBox(hc, DialogType.DELETE, im,
                             "确认删除",
                             "要删除这" + sourceList.size() + "个文件吗？\n\n你可以在回收站处找回。").show();
                 }
@@ -138,7 +138,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                     info.append("大小：").append(im.getFormatSize()).append("\n");
                     info.append("日期：").append(im.getFormatTime()).append("\n");
                     info.append("\n位置：").append(im.getImageFilePath());
-                    new CustomDialog(hc, DialogType.INFO, im,
+                    new DialogBox(hc, DialogType.INFO, im,
                             im.getImageName(), info.toString()).show();
                 } else {
                     info.append("数量：").append(sourceList.size()).append(" 个\n");
@@ -148,7 +148,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                     }
                     info.append("大小：").append(GenUtilModel.getFormatSize(totalSize)).append("\n");
                     info.append("位置：").append(im.getImageParentPath()).append("\n");
-                    CustomDialog dialog = new CustomDialog(hc, DialogType.INFO, null, "多个文件", info.toString());
+                    DialogBox dialog = new DialogBox(hc, DialogType.INFO, null, "多个文件", info.toString());
                     dialog.getBodyTextArea().setPrefHeight(150);
                     dialog.show();
                 }
