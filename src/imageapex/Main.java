@@ -12,10 +12,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-//鼠标滚轮bug
-//点缩略图选中 单击拖拽多选功能
-//取消选中状态
-
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {

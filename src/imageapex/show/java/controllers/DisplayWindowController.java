@@ -343,38 +343,6 @@ public class DisplayWindowController extends AbstractController implements Initi
         });
     }
 
-//    @FXML
-//    private void ocr() {
-//        saveButton.setVisible(false);
-//
-//        CustomDialog loading = new CustomDialog(this, DialogType.INFO, imageModel, "正在处理");
-//        loading.setLoadingSpinner();
-//        loading.show();
-//
-//        Task ocrTask = new Task() {
-//            @Override
-//            protected Object call() throws Exception {
-//                //执行OCR识别，在成功后关闭加载窗口
-//                String path = imageModel.getImageFilePath();
-//                File file = new File(path);
-//                if (!file.exists()) {
-//                    System.out.println("图片不存在!");
-//                }
-//                String result = Ocr.doOcr(path, Ocr.ENG);
-//                loading.close();
-//                updateMessage(result);   //向监听器更新结果
-//                return true;
-//            }
-//        };
-//        //设置加载任务的监听，在接收到信息回传时展示结果
-//        ocrTask.messageProperty().addListener((observable, oldValue, newValue) -> {
-//            CustomDialog dialog = new CustomDialog(this, DialogType.INFO, imageModel, "识别结果");
-//            dialog.setBodyLabel(newValue);
-//            dialog.show();
-//        });
-//        new Thread(ocrTask).start(); //启动新的线程进行识别任务
-//    }
-
     @FXML
     public void showInfo() {
         saveButton.setVisible(false);

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public class SelectionModel {//已选图片的工具类
+public class SelectionModel {//选择图片的工具类
 
     private static ArrayList<ImageBox> selection = new ArrayList<>(); //用于暂存选中的缩略图单元ImageBox，方便设置选中时的样式
     @Getter
