@@ -126,6 +126,7 @@ public class HomeController extends AbstractController implements Initializable 
         initIntroPage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
         initSearchTextField();
         initPathTextField();
+        initMouseAction();
         System.out.println("imageapex.Main window initialization done...");
     }
 
