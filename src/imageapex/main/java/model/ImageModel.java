@@ -18,7 +18,6 @@ public class ImageModel {//单元图片类
     private long fileLength;  //文件大小
     private long imageLastModified; // 图片修改时间
 
-
     public ImageModel(File file) {//根据File文件构造类
         this.imageFile = file;
         this.imageFilePath = file.getAbsolutePath();
