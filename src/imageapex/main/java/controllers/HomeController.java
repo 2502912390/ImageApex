@@ -473,9 +473,8 @@ public class HomeController extends AbstractController implements Initializable 
         author.getStyleClass().add("normal-text-b");
         author.setTextAlignment(TextAlignment.CENTER);
 
-        String repo = "Source code:\n" +
-                "www.91.com\n" +
-                "www.pornhub.com\n";
+        String repo = "感谢您的使用！\n" +
+                "Thank you for your use!\n";
 
         JFXTextArea bodyTextArea = new JFXTextArea(repo);
         bodyTextArea.getStyleClass().addAll("dialog-text-area", "dialog-body");
