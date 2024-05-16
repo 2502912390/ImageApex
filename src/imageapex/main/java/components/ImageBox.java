@@ -22,26 +22,17 @@ import lombok.Setter;
 
 import java.io.IOException;
 
-
-/**
- * 主窗口的缩略图单元。
- */
 @Getter
 @Setter
-public class ImageBox extends VBox {
+public class ImageBox extends VBox {//缩略图单元
 
-    private ImageModel im;
-    private ImageView2 imageView2;
-    private JFXPopup popUpMenu;
+    private ImageModel im;//原始图片
+    private ImageView2 imageView2;//缩略图
+    private JFXPopup popUpMenu;//弹窗
     @Getter
     private JFXCheckBox checkBox = new JFXCheckBox();//复选框
 
-    /**
-     * 构造器，初始化一个缩略图单元
-     *
-     * @param im 图片文件类
-     */
-    public ImageBox(ImageModel im) {
+    public ImageBox(ImageModel im) {//构造一个缩略图
         this.im = im;
         ImageView2 imageView = new ImageView2(new Image(im.getImageFile().toURI().toString(),
                 100,
@@ -54,7 +45,7 @@ public class ImageBox extends VBox {
         ImageLabel imageLabel = new ImageLabel(im.getImageName());  //标签 - 文件名
         imageLabel.setStyle("-fx-padding:7 0 7 -2;");
 
-        HBox hBox = new HBox(checkBox, imageLabel);
+        HBox hBox = new HBox(checkBox, imageLabel);//添加复选框和标签
         hBox.setAlignment(Pos.CENTER);
         hBox.setStyle("-fx-padding:5 5 3 5;");
 
@@ -62,9 +53,9 @@ public class ImageBox extends VBox {
         setMaxSize(170, 170);
         setAlignment(Pos.BOTTOM_CENTER);
 
-        //设置文件信息tips
+        //创建一个可以显示文本信息的可悬停的提示框
         String tooltip = String.format("名称: %s\n大小: %s", im.getImageName(), im.getFormatSize());
-        Tooltip.install(this, new Tooltip(tooltip));
+        Tooltip.install(this, new Tooltip(tooltip));//install方法将tip和当前ImageBox联系起来
 
         JFXDepthManager.setDepth(this, 0);
         initMouseAction();
@@ -76,7 +67,6 @@ public class ImageBox extends VBox {
      * 设置选中与否的属性绑定
      */
     ImageBox imageBox = this;
-
     private void initCheckBox() {
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -88,6 +78,11 @@ public class ImageBox extends VBox {
                 }
             }
         });
+    }
+
+    //设置为选中状态
+    public void setSelect(){
+        this.checkBox.setSelected(true);
     }
 
     /**

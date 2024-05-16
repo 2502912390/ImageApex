@@ -174,7 +174,6 @@ public class HomeController extends AbstractController implements Initializable 
             }
         });
 
-
         // 添加鼠标拖拽事件处理程序
         imageListPane.setOnMousePressed(event -> {
             // 记录鼠标按下的起始点
@@ -206,6 +205,7 @@ public class HomeController extends AbstractController implements Initializable 
                     if (node instanceof ImageBox) {
                         ImageBox imageBox = (ImageBox) node;
                         //设置为选中状态
+//                        imageBox.setSelect();
                     }
                 }
             }
@@ -261,7 +261,6 @@ public class HomeController extends AbstractController implements Initializable 
             imageListPane.getChildren().add(imageBox);
         }
     }
-
 
     public void refreshImagesList(String sort) {//根据排序方式排序图片列表 并放置
         SelectionModel.clear();
