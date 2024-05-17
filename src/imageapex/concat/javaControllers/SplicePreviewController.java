@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-//拼接类Contrller
-public class SplicePreviewController implements Initializable {
+public class SplicePreviewController implements Initializable {//拼接类Contrller
     @FXML
     private StackPane rootPane;
     @FXML
@@ -85,9 +84,7 @@ public class SplicePreviewController implements Initializable {
         snackbar = new JFXSnackbar(hc.getRootPane());
     }
 
-    //先调用这个设置好图片，否则会导致空指针 bug
-    //将set图片竖直拼接
-    public void setImageModelList0(ArrayList<ImageModel> set) {
+    public void setImageModelList0(ArrayList<ImageModel> set) {//竖直拼接
         this.mode="V";
         this.imageModelList = set;
         scrollPane.setContent(vBox0);
@@ -113,8 +110,7 @@ public class SplicePreviewController implements Initializable {
         }
     }
 
-    //水平
-    public void setImageModelList1(ArrayList<ImageModel> set) {
+    public void setImageModelList1(ArrayList<ImageModel> set) { //横向拼接
         this.mode="H";
          this.imageModelList = set;
          scrollPane.setContent(hBox1);
@@ -138,8 +134,7 @@ public class SplicePreviewController implements Initializable {
          }
      }
 
-    //九宫格
-    public void setImageModelList2(ArrayList<ImageModel> set) {
+    public void setImageModelList2(ArrayList<ImageModel> set) {//九宫格拼接
          this.mode="Grid";
          this.imageModelList = set;
          scrollPane.setContent(gridPane);
@@ -172,14 +167,13 @@ public class SplicePreviewController implements Initializable {
      }
 
 
-     //涂鸦
-    public void setImageModelList3(ArrayList<ImageModel> set){
+//     //涂鸦
+//    public void setImageModelList3(ArrayList<ImageModel> set){
+//
+//    }
 
-    }
-
-    //截图 = 保存 与saveButton绑定
     @FXML
-    private void snap() {
+    private void snap() {//实现保存功能
         WritableImage wa;
         Stage stage;
 

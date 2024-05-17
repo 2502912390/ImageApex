@@ -89,10 +89,8 @@ public class ImageBox extends VBox {//缩略图单元
         this.checkBox.setSelected(false);
     }
 
-    /**
-     * 加载右键菜单
-     */
-    private void initPopUpMenu() {
+
+    private void initPopUpMenu() {//右键弹出菜单
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/imageapex/main/resources/fxml/PopupMenu.fxml"));
         loader.setController(new PopupMenuController(this));
         try {
@@ -103,10 +101,8 @@ public class ImageBox extends VBox {//缩略图单元
         popUpMenu.setAutoHide(true);
     }
 
-    /**
-     * 图片对鼠标操作的反馈
-     */
-    private void initMouseAction() {
+
+    private void initMouseAction() {//监听鼠标事件
         //鼠标点击事件
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

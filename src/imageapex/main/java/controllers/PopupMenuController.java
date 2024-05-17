@@ -20,12 +20,12 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
     @FXML
     private JFXListView<?> popupList;
 
-    private ImageModel im;
-    private ImageBox imageBox;
+    private ImageModel im;//图片
+    private ImageBox imageBox;//缩略图
     private HomeController hc;
 
     @Getter
-    private JFXSnackbar snackbar;
+    private JFXSnackbar snackbar;//显示临时消息
 
     public PopupMenuController() {
         //将本类的实例添加到全局映射中
@@ -48,37 +48,40 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
 
     @SuppressWarnings("unused")
     @FXML
-    private void action() {
+    private void action() {//根据缩略图右键操作选择弹出对应提示信息
         ArrayList<ImageModel> sourceList = SelectionModel.getImageModelList();
         switch (popupList.getSelectionModel().getSelectedIndex()) {
-            case 0:
-                if (sourceList.isEmpty()) {
+            case 0://复制
+                if (sourceList.isEmpty()) {//设置需要处理的路径和数量
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     SelectedModel.setWaitingPasteNum(1);
                 } else {
                     SelectedModel.setSourcePath(sourceList);
                     SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
+                //设置粘贴模式
                 SelectedModel.setCopyOrCut(0);
-
+                //粘贴按钮可见
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已复制到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
-            case 1:
-                if (sourceList.isEmpty()) {
+            case 1://剪切
+                if (sourceList.isEmpty()) {//设置需要处理的路径和数量
                     SelectedModel.setSourcePath(im.getImageFilePath());
                     SelectedModel.setWaitingPasteNum(1);
                 } else {
                     SelectedModel.setSourcePath(sourceList);
                     SelectedModel.setWaitingPasteNum(sourceList.size());
                 }
+                //设置剪切模式
                 SelectedModel.setCopyOrCut(1);
 
                 hc.getPasteButton().setDisable(false);
                 snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已剪切到剪贴板"));
                 imageBox.getPopUpMenu().hide();
                 break;
+            //重命名
             case 2:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
@@ -89,6 +92,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                 new DialogBox(hc, DialogType.RENAME, im, "重命名图片").show();
                 imageBox.getPopUpMenu().hide();
                 break;
+            //压缩
             case 3:
                 imageBox.getPopUpMenu().hide();
 
@@ -103,7 +107,9 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                 if (success != 0) snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
                 else snackbar.enqueue(new JFXSnackbar.SnackbarEvent(" 没有图片进行压缩 \n压缩条件:大于800KB"));
                 break;
-            case 4://拼接
+
+            //拼接
+            case 4:
                 if (sourceList.isEmpty() || sourceList.size() == 1) {
                     //未选择或只选了一张图片
                     snackbar.enqueue(new JFXSnackbar.SnackbarEvent("请选择两张或以上图片进行拼接"));
@@ -114,6 +120,8 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
 
                 imageBox.getPopUpMenu().hide();
                 break;
+
+            //删除
             case 5:
                 if (sourceList.isEmpty()) {
                     SelectedModel.setSourcePath(im.getImageFilePath());
@@ -128,6 +136,8 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                 }
                 imageBox.getPopUpMenu().hide();
                 break;
+
+            //属性
             case 6:
                 Image image = new Image(im.getImageFile().toURI().toString());
                 StringBuilder info = new StringBuilder();

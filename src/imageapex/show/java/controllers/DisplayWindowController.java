@@ -44,24 +44,22 @@ import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
-/**
- * 展示窗口的控制器
- */
-public class DisplayWindowController extends AbstractController implements Initializable {
+
+public class DisplayWindowController extends AbstractController implements Initializable {//展示单张图片窗口的控制器
 
     @FXML
     @Getter
     public StackPane rootPane;
-    public HBox toolbar;
+    public HBox toolbar;//底部工具栏
     private Stage stage; //获取当前窗口
 
     @FXML
-    public JFXButton saveButton;
+    public JFXButton saveButton;//保存按钮
 
     @FXML
     @Setter
     @Getter
-    private ImageView imageView;
+    private ImageView imageView;//存储输入的图片
 
     @Setter
     @Getter
@@ -71,17 +69,16 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
-    private SwitchImages sw;
+    private SwitchImages sw;//实现图片切换的类
     private HomeController hc;
 
-    private int width ;
-    private int height ;
+    private int width ;//涂鸦对象的宽
+    private int height ;//涂鸦对象的高
 
-    // 设置涂鸦的圆形半径
-    private double radius;
+    private double radius;// 设置涂鸦的圆形半径
 
-    private PixelWriter pixelWriter;
-    private ColorPicker colorPicker;
+    private PixelWriter pixelWriter;//写对象
+    private ColorPicker colorPicker;//颜色选择面板
 
     public DisplayWindowController() {
 
@@ -163,7 +160,7 @@ public class DisplayWindowController extends AbstractController implements Initi
         setImageMouseAction();
     }
 
-    private void setImageMouseAction() {
+    private void setImageMouseAction() {//设置监听事件
         //以下实现滚轮的放大缩小
         imageView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -217,7 +214,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     //-------------以下为工具栏按钮事件---------------
     @FXML
-    private void zoomIn() {
+    private void zoomIn() {//放大
 //        saveButton.setVisible(false);
 
         imageView.setScaleX(imageView.getScaleX() * 1.25);
@@ -225,16 +222,15 @@ public class DisplayWindowController extends AbstractController implements Initi
     }
 
     @FXML
-    private void zoomOut() {
+    private void zoomOut() {//缩小
 //        saveButton.setVisible(false);
 
         imageView.setScaleX(imageView.getScaleX() * 0.75);
         imageView.setScaleY(imageView.getScaleY() * 0.75);
     }
 
-    //上一张图
     @FXML
-    private void showPreviousImg() throws IOException {
+    private void showPreviousImg() throws IOException {//上一张图
         saveButton.setVisible(false);
 
         initStatus();
@@ -253,9 +249,8 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
-    //下一张图
     @FXML
-    public void showNextImg() throws IOException {
+    public void showNextImg() throws IOException {//下一张图
         saveButton.setVisible(false);
 
         initStatus();
@@ -276,8 +271,8 @@ public class DisplayWindowController extends AbstractController implements Initi
     }
 
     @FXML
-    //幻灯片放映
-    private void playSlide() {
+
+    private void playSlide() {//幻灯片放映
         saveButton.setVisible(false);
 
         initStatus();   //比例重新设定
@@ -322,8 +317,8 @@ public class DisplayWindowController extends AbstractController implements Initi
         });
     }
 
-    //停止幻灯片播放
-    private void stopSlide(Timer timer, Stage stage) {
+
+    private void stopSlide(Timer timer, Stage stage) {//停止幻灯片播放
         saveButton.setVisible(false);
 
         timer.cancel();
@@ -340,7 +335,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     }
 
     @FXML
-    public void showInfo() {
+    public void showInfo() {//显示参数
         saveButton.setVisible(false);
 
         if (imageModel == null) {
@@ -358,9 +353,8 @@ public class DisplayWindowController extends AbstractController implements Initi
                 imageModel.getImageName(), info.toString()).show();
     }
 
-    //删除
     @FXML
-    private void delete() {
+    private void delete() {//删除
         saveButton.setVisible(false);
 
         if (imageModel == null) {
@@ -374,7 +368,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     }
 
     @FXML
-    private void fullScreen() {
+    private void fullScreen() {//全屏
 //        saveButton.setVisible(false);
 
         if (stage.isFullScreen()) {
@@ -386,7 +380,7 @@ public class DisplayWindowController extends AbstractController implements Initi
     }
 
     @FXML
-    private void compress() {
+    private void compress() {//压缩
         saveButton.setVisible(false);
 
         SelectedModel.setSourcePath(imageModel.getImageFilePath());
@@ -406,9 +400,9 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
-    //实现涂鸦照片保存功能
+
     @FXML
-    private void snap(){
+    private void snap(){//实现涂鸦照片的保存功能
 //        System.out.println("222222");//for_test
         if(saveButton.isVisible()){//bug
             WritableImage wa = imageView.snapshot(null, null);//+++ 编辑像素操作/颜色处理
@@ -440,9 +434,9 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
     }
 
-    @FXML //涂鸦
-    private void edit() {
-        System.out.println("11111111111");
+    @FXML
+    private void edit() {//涂鸦
+//        System.out.println("11111111111");
         saveButton.setVisible(true);
         colorPicker.setVisible(true);
 

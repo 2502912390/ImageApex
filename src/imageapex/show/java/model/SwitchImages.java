@@ -25,8 +25,7 @@ public class SwitchImages {//处理上下图片切换类
         this.ilist = ilist;
     }
 
-    //返回下一张照片
-    public ImageModel nextImage(ImageModel im) throws IOException {
+    public ImageModel nextImage(ImageModel im) throws IOException {//查看下一张照片
         int i = 0;
         for (i = 0; i < ilist.size(); i++) {
             if (ilist.get(i).getImageName().equals(im.getImageName())) {
@@ -42,8 +41,7 @@ public class SwitchImages {//处理上下图片切换类
 
     }
 
-    //返回上一张照片
-    public ImageModel lastImage(ImageModel im) throws IOException {
+    public ImageModel lastImage(ImageModel im) throws IOException {//查看上一张照片
         int i = 0;
         for (i = 0; i < ilist.size(); i++) {
             if (ilist.get(i).getImageName().equals(im.getImageName())) {
