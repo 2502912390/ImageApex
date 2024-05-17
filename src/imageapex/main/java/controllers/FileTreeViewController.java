@@ -28,8 +28,8 @@ public class FileTreeViewController implements Initializable {//文件目录树�
 
     public FileTreeViewController() {
         //将本类的实例添加到全局映射中
-        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+        ControllerInstance.controllers.put(this.getClass().getSimpleName(), this);
+        hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
     }
 
     @Override

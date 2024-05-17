@@ -102,7 +102,7 @@ public class HomeController extends AbstractController implements Initializable 
 
     public HomeController() {
         //将本类的实例添加到全局映射中
-        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
+        ControllerInstance.controllers.put(this.getClass().getSimpleName(), this);
     }
 
     @Override
@@ -121,11 +121,11 @@ public class HomeController extends AbstractController implements Initializable 
         infoBar.setBackground(Background.EMPTY); //信息栏设置透明背景
         closeSearchButton.setVisible(false);//取消搜索按钮默认不可见
 
-        initPasteButton();
-        initSortComboBox();
-        initIntroPage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
-        initSearchTextField();
-        initPathTextField();
+        createPasteButton();
+        createSortBox();
+        creativeIntroImage();       //设置欢迎页必须在scrollPane之后设置，否则会被imageListPane空白页覆盖
+        createSearchText();
+        createPathText();
         initMouseAction();
         System.out.println("imageapex.Main window initialization done...");
     }
@@ -254,8 +254,8 @@ public class HomeController extends AbstractController implements Initializable 
             return;
         } else {
             //统计图片总数和总占用空间大小
-            int total = ImageListModel.getListImgNum(imageModelList);
-            String size = ImageListModel.getListImgSize(imageModelList);
+            int total = ImageSortModel.getListImageNum(imageModelList);
+            String size = ImageSortModel.getListImageSize(imageModelList);
             folderInfoLabel.setText(String.format("%d 张图片，共 %s ", total, size));
             selectedNumLabel.setText("| 已选中 0 张");
         }
@@ -275,7 +275,7 @@ public class HomeController extends AbstractController implements Initializable 
     public void refreshImagesList(String sort) {//根据排序方式排序图片列表 并放置
         SelectionModel.clear();
         SelectedModel.getSourcePathList().clear();
-        curImgList = ImageListModel.refreshList(currentPath, sort);
+        curImgList = ImageSortModel.renewList(currentPath, sort);
         placeImages(curImgList, currentPath);
     }
 
@@ -286,11 +286,11 @@ public class HomeController extends AbstractController implements Initializable 
             pathStack1.push(path);
             pathStack2.clear();
         }
-        placeImages(ImageListModel.refreshList(currentPath), currentPath);
+        placeImages(ImageSortModel.renewList(currentPath), currentPath);
     }
 
     @FXML
-    private void initIntroPage() {//初始化欢迎界面
+    private void creativeIntroImage() {//初始化欢迎界面
         ImageView welcomeImage = new ImageView(new Image("/imageapex/main/resources/images/intro.png"));
         welcomeImage.setFitWidth(850);
         welcomeImage.setPreserveRatio(true);
@@ -310,7 +310,7 @@ public class HomeController extends AbstractController implements Initializable 
         scrollPane.setContent(stackPane);
     }
 
-    private void initSortComboBox() {//初始化排序框
+    private void createSortBox() {//初始化排序框
         sortComboBox.getItems().addAll(SortParam.SBNR, SortParam.SBND, SortParam.SBSR, SortParam.SBSD, SortParam.SBDR, SortParam.SBDD);
         sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -321,21 +321,21 @@ public class HomeController extends AbstractController implements Initializable 
         });
     }
 
-    private void initSearchTextField() {// 检测到回车调用搜索方法
+    private void createSearchText() {// 检测到回车调用搜索方法
         searchTextField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER)
                 searchImage();
         });
     }
 
-    private void initPathTextField() {// 检测到回车 跳转到对应文件夹
+    private void createPathText() {// 检测到回车 跳转到对应文件夹
         pathTextField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER)
                 gotoPath();
         });
     }
 
-    private void initPasteButton() {
+    private void createPasteButton() {
         if (SelectedModel.getSourcePath() == null || SelectedModel.getCopyOrCut() == -1) {//没有选择要复制或移动的文件
             pasteButton.setDisable(true);//粘贴按钮设置为禁用状态
         }
@@ -354,7 +354,7 @@ public class HomeController extends AbstractController implements Initializable 
             }
             String path = pathStack1.pop();
             pathStack2.push(currentPath);
-            placeImages(ImageListModel.refreshList(path), path);
+            placeImages(ImageSortModel.renewList(path), path);
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("后退到底啦"));
         }
@@ -365,7 +365,7 @@ public class HomeController extends AbstractController implements Initializable 
         if (!pathStack2.isEmpty()) {
             String path = pathStack2.pop();
             pathStack1.push(currentPath);
-            placeImages(ImageListModel.refreshList(path), path);
+            placeImages(ImageSortModel.renewList(path), path);
         } else {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("前进到尽头啦"));
         }
@@ -384,7 +384,7 @@ public class HomeController extends AbstractController implements Initializable 
         } else {
             parent = currentPath.substring(0, currentPath.lastIndexOf("\\"));
         }
-        placeImages(ImageListModel.refreshList(parent), parent);
+        placeImages(ImageSortModel.renewList(parent), parent);
         pathStack1.push(parent);
     }
 
@@ -403,7 +403,7 @@ public class HomeController extends AbstractController implements Initializable 
         if (!directory.exists()) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("路径不正确"));
         } else {
-            ArrayList<ImageModel> list = ImageListModel.refreshList(path);
+            ArrayList<ImageModel> list = ImageSortModel.renewList(path);
             // placeImages方法中已处理列表为空时的情况
             if (list != null)
                 placeImages(list, path);

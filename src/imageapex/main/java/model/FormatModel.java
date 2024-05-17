@@ -4,7 +4,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GenUtilModel {
+public class FormatModel {
     private static final double KB = 1024.0;
     private static final double MB = 1024.0*1024.0;
     private static final double GB = 1024.0*1024.0*1024.0;

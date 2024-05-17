@@ -29,9 +29,9 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
 
     public PopupMenuController() {
         //将本类的实例添加到全局映射中
-        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
+        ControllerInstance.controllers.put(this.getClass().getSimpleName(), this);
         //获取HomeController实例
-        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+        hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
     }
 
     @Override
@@ -146,7 +146,7 @@ public class PopupMenuController implements Initializable {//缩略图右键菜�
                     for (ImageModel im : sourceList) {
                         totalSize += im.getFileLength();
                     }
-                    info.append("大小：").append(GenUtilModel.getFormatSize(totalSize)).append("\n");
+                    info.append("大小：").append(FormatModel.getFormatSize(totalSize)).append("\n");
                     info.append("位置：").append(im.getImageParentPath()).append("\n");
                     DialogBox dialog = new DialogBox(hc, DialogType.INFO, null, "多个文件", info.toString());
                     dialog.getBodyTextArea().setPrefHeight(150);

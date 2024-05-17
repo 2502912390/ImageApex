@@ -10,11 +10,11 @@ import imageapex.show.DisplayWindow;
 import imageapex.main.java.components.DialogBox;
 import imageapex.main.java.components.DialogType;
 import imageapex.main.java.controllers.AbstractController;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.controllers.HomeController;
-import imageapex.main.java.model.ImageListModel;
+import imageapex.main.java.model.ImageSortModel;
 import imageapex.main.java.model.ImageModel;
-import imageapex.show.java.model.SwitchPics;
+import imageapex.show.java.model.SwitchImages;
 import imageapex.main.java.model.SelectedModel;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -71,7 +71,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @Getter
     private JFXSnackbar snackbar; //下方通知条
-    private SwitchPics sw;
+    private SwitchImages sw;
     private HomeController hc;
 
     private int width ;
@@ -89,8 +89,8 @@ public class DisplayWindowController extends AbstractController implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+        ControllerInstance.controllers.put(this.getClass().getSimpleName(), this);
+        hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
 
         toolbar.translateYProperty().bind(rootPane.heightProperty().divide(5).multiply(2));
 
@@ -118,15 +118,15 @@ public class DisplayWindowController extends AbstractController implements Initi
         }
 
         if (hc.isComboBoxClicked()) {
-            imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent(), hc.getSortComboBox().getValue());
+            imageModelArrayList = ImageSortModel.renewList(im.getImageFile().getParent(), hc.getSortComboBox().getValue());
         } else {
-            imageModelArrayList = ImageListModel.refreshList(im.getImageFile().getParent());
+            imageModelArrayList = ImageSortModel.renewList(im.getImageFile().getParent());
         }
 
         this.imageModel = im;
         this.image = new Image(im.getImageFile().toURI().toString());
         this.imageView.setImage(image);
-        this.sw = new SwitchPics(imageModelArrayList);
+        this.sw = new SwitchImages(imageModelArrayList);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
@@ -241,7 +241,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
         //为了防止删除后显示空白，自动刷新
         if (imageModel != null)
-            imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+            imageModelArrayList = ImageSortModel.renewList(imageModel.getImageFile().getParent());
 
         if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
@@ -262,7 +262,7 @@ public class DisplayWindowController extends AbstractController implements Initi
 
         //为了防止删除后显示空白，自动刷新
         if (imageModel != null)
-            imageModelArrayList = ImageListModel.refreshList(imageModel.getImageFile().getParent());
+            imageModelArrayList = ImageSortModel.renewList(imageModel.getImageFile().getParent());
 
         if (imageModelArrayList == null || imageModelArrayList.size() == 0) {
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("此文件夹图片已空"));
@@ -396,7 +396,7 @@ public class DisplayWindowController extends AbstractController implements Initi
             snackbar.enqueue(new JFXSnackbar.SnackbarEvent("已压缩" + success + "张图片并创建副本"));
             try {
                 // 刷新缩略图列表
-                hc.placeImages(ImageListModel.initImgList(imageModel.getImageParentPath()),
+                hc.placeImages(ImageSortModel.createImageList(imageModel.getImageParentPath()),
                         imageModel.getImageParentPath());
             } catch (IOException e) {
                 e.printStackTrace();

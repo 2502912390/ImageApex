@@ -2,25 +2,25 @@ package imageapex.show.java.model;
 
 import com.jfoenix.controls.JFXSnackbar;
 import imageapex.show.java.controllers.DisplayWindowController;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.model.ImageModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SwitchPics {//处理上下图片切换类
+public class SwitchImages {//处理上下图片切换类
 
     private ArrayList<ImageModel> ilist;
 
     JFXSnackbar snackbar;
     DisplayWindowController dw;
 
-    public SwitchPics() {
-        dw = (DisplayWindowController) ControllerUtil.controllers.get(DisplayWindowController.class.getSimpleName());
+    public SwitchImages() {
+        dw = (DisplayWindowController) ControllerInstance.controllers.get(DisplayWindowController.class.getSimpleName());
         snackbar = new JFXSnackbar(dw.getRootPane());
     }
 
-    public SwitchPics(ArrayList<ImageModel> ilist) {
+    public SwitchImages(ArrayList<ImageModel> ilist) {
         this();
         this.ilist = ilist;
     }

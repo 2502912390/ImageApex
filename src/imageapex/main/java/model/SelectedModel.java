@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.sun.jna.platform.FileUtils;
 import imageapex.main.java.components.DialogBox;
 import imageapex.main.java.components.DialogType;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.controllers.HomeController;
 import lombok.Getter;
 import lombok.NonNull;
@@ -51,7 +51,7 @@ public class SelectedModel {//被选中照片操作类
 
     private static int coverImage = 0;//统计覆盖了图片数量
 
-    private static HomeController hc = (HomeController) ControllerUtil.controllers.get("HomeController");//获取home控制类 此处主要是用于更新粘贴/剪切后显示的图像列表
+    private static HomeController hc = (HomeController) ControllerInstance.controllers.get("HomeController");//获取home控制类 此处主要是用于更新粘贴/剪切后显示的图像列表
 
     //单选一张图片时 设置操作的源路径
     public static boolean setSourcePath(@NonNull ImageModel im) { //根据输入的图片/文件 设置源路径
@@ -178,9 +178,9 @@ public class SelectedModel {//被选中照片操作类
     private static boolean imageRepeat(String path) {//判断是否有重复图片
         String targetImageName = targetPath.getFileName().toString();
         try {
-            if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
+            if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageSortModel.createImageList(path))) != null) {
                 // 找到有重复的图片
-                if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageListModel.initImgList(path))) != null) {
+                if (SearchImageModel.accurateSearch(targetImageName, Objects.requireNonNull(ImageSortModel.createImageList(path))) != null) {
                     // 有重复图片
                     return true;
                 }
@@ -305,7 +305,7 @@ public class SelectedModel {//被选中照片操作类
 
 
     private static boolean microCompress(int desSize) throws IOException {// 压缩图片
-        byte[] imageBytes = GenUtilModel.getByteByFile(sourcePath.toFile());//将文件转字节数组
+        byte[] imageBytes = FormatModel.getByteByFile(sourcePath.toFile());//将文件转字节数组
         if (imageBytes == null || imageBytes.length < desSize * 1024) {//判断
             // 不需要压缩了
             return false;
@@ -323,7 +323,7 @@ public class SelectedModel {//被选中照片操作类
         }
         String newImagePath = suffixName(getBeforePath(), "_compress");
         File newFile = new File(newImagePath);
-        return GenUtilModel.getFileByByte(imageBytes, newFile);//返回file文件类型
+        return FormatModel.getFileByByte(imageBytes, newFile);//返回file文件类型
     }
 
     private static double getAccuracy(double imageSize) {//根据图片大小 自适应控制压缩精度

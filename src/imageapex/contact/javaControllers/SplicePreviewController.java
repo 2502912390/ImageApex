@@ -2,7 +2,7 @@ package imageapex.contact.javaControllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.controllers.HomeController;
 import imageapex.main.java.model.ImageModel;
 import javafx.embed.swing.SwingFXUtils;
@@ -76,8 +76,8 @@ public class SplicePreviewController implements Initializable {
         hBox1.setSpacing(0);
 
         //该类放入全局映射
-        ControllerUtil.controllers.put(this.getClass().getSimpleName(), this);
-        hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+        ControllerInstance.controllers.put(this.getClass().getSimpleName(), this);
+        hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
 
         //saveButton的位置会根据rootPane的大小自动调整
         saveButton.translateYProperty().bind(rootPane.heightProperty().divide(15).multiply(5));

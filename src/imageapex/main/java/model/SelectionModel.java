@@ -2,7 +2,7 @@ package imageapex.main.java.model;
 
 import com.jfoenix.effects.JFXDepthManager;
 import imageapex.main.java.components.ImageBox;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.controllers.HomeController;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ public class SelectionModel {//选择图片的工具类
     private static ArrayList<ImageBox> selection = new ArrayList<>(); //用于暂存选中的缩略图单元ImageBox，方便设置选中时的样式
     @Getter
     public static ArrayList<ImageModel> imageModelList = new ArrayList<>(); //存放选中的图片本身，作为后续复制粘贴等批量操作的源
-    private static HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
+    private static HomeController hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
 
     public static void add(ImageBox node) {//设置选中的效果
 //        if (!contains(node)){

@@ -28,7 +28,7 @@
                         </JFXButton>
 
                         <!--帮助按钮-->
-                        <JFXButton fx:id="introButton" onAction="#initIntroPage" ripplerFill="blueviolet"
+                        <JFXButton fx:id="introButton" onAction="#creativeIntroImage" ripplerFill="blueviolet"
                                    styleClass="toolbar-button" style="-fx-padding:11px;">
                             <graphic>
                                 <ImageView fitWidth="25" preserveRatio="true">

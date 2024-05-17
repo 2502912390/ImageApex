@@ -41,10 +41,10 @@ public class ImageModel {//单元图片类
     }
 
     public String getFormatSize() {//获取照片的大小string
-        return GenUtilModel.getFormatSize(this.fileLength);
+        return FormatModel.getFormatSize(this.fileLength);
     }
 
     public String getFormatTime() {//获取最后的修改时间string
-        return GenUtilModel.getFormatTime(this.imageLastModified);
+        return FormatModel.getFormatTime(this.imageLastModified);
     }
 }

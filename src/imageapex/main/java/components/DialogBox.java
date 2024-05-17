@@ -5,7 +5,7 @@ import com.jfoenix.controls.*;
 import imageapex.contact.SplicePreviewWindow;
 import imageapex.show.java.controllers.DisplayWindowController;
 import imageapex.main.java.controllers.AbstractController;
-import imageapex.main.java.controllers.ControllerUtil;
+import imageapex.main.java.controllers.ControllerInstance;
 import imageapex.main.java.controllers.HomeController;
 import imageapex.main.java.model.ImageModel;
 import imageapex.main.java.model.SelectedModel;
@@ -28,8 +28,8 @@ public class DialogBox extends JFXDialog { //对话框类
     private ImageModel targetImage;
 
     private AbstractController controller;
-    private HomeController hc = (HomeController) ControllerUtil.controllers.get(HomeController.class.getSimpleName());
-    private DisplayWindowController dwc = (DisplayWindowController) ControllerUtil.controllers.get(DisplayWindowController.class.getSimpleName());
+    private HomeController hc = (HomeController) ControllerInstance.controllers.get(HomeController.class.getSimpleName());
+    private DisplayWindowController dwc = (DisplayWindowController) ControllerInstance.controllers.get(DisplayWindowController.class.getSimpleName());
 
     private DialogType type; //对话框类型 删除/重命名。。。
 
