@@ -2,7 +2,7 @@ package imageapex.main.java.components;
 
 
 import com.jfoenix.controls.*;
-import imageapex.contact.SplicePreviewWindow;
+import imageapex.concat.SplicePreviewWindow;
 import imageapex.show.java.controllers.DisplayWindowController;
 import imageapex.main.java.controllers.AbstractController;
 import imageapex.main.java.controllers.ControllerInstance;

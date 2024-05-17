@@ -1,4 +1,4 @@
-package imageapex.contact;
+package imageapex.concat;
 
 import com.jfoenix.controls.JFXDecorator;
 import imageapex.main.java.model.ImageModel;
@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import imageapex.contact.javaControllers.SplicePreviewController;
+import imageapex.concat.javaControllers.SplicePreviewController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class SplicePreviewWindow extends Application {
 
     @Override
     public void start(Stage stage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/imageapex/contact/resources/fxml/SplicePreview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/imageapex/concat/resources/fxml/SplicePreview.fxml"));
 
         Parent root = null;
         try {
@@ -69,7 +69,7 @@ public class SplicePreviewWindow extends Application {
 
         //加载css样式文件
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(this.getClass().getResource("/imageapex/contact/resources/css/contact.css").toExternalForm());
+        stylesheets.addAll(this.getClass().getResource("/imageapex/concat/resources/css/contact.css").toExternalForm());
 
 
         stage.setTitle("图片拼接预览");

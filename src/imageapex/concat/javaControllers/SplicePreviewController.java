@@ -1,4 +1,4 @@
-package imageapex.contact.javaControllers;
+package imageapex.concat.javaControllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
